@@ -14,6 +14,8 @@
 		AC6E55EE2965FB0900186038 /* QuizesScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E55ED2965FB0900186038 /* QuizesScreenTests.swift */; };
 		AC6E55F82965FB0900186038 /* QuizesScreenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E55F72965FB0900186038 /* QuizesScreenUITests.swift */; };
 		AC6E55FA2965FB0900186038 /* QuizesScreenUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E55F92965FB0900186038 /* QuizesScreenUITestsLaunchTests.swift */; };
+		AC6E56072965FE8500186038 /* QuizesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E56062965FE8500186038 /* QuizesModel.swift */; };
+		AC6E56092966016200186038 /* QuizesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E56082966016200186038 /* QuizesViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		AC6E55F32965FB0900186038 /* QuizesScreenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuizesScreenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC6E55F72965FB0900186038 /* QuizesScreenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizesScreenUITests.swift; sourceTree = "<group>"; };
 		AC6E55F92965FB0900186038 /* QuizesScreenUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizesScreenUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		AC6E56062965FE8500186038 /* QuizesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizesModel.swift; sourceTree = "<group>"; };
+		AC6E56082966016200186038 /* QuizesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,8 @@
 				AC6E55DE2965FB0700186038 /* ContentView.swift */,
 				AC6E55E02965FB0800186038 /* Assets.xcassets */,
 				AC6E55E22965FB0800186038 /* Preview Content */,
+				AC6E56062965FE8500186038 /* QuizesModel.swift */,
+				AC6E56082966016200186038 /* QuizesViewModel.swift */,
 			);
 			path = QuizesScreen;
 			sourceTree = "<group>";
@@ -258,6 +264,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC6E55DF2965FB0700186038 /* ContentView.swift in Sources */,
+				AC6E56092966016200186038 /* QuizesViewModel.swift in Sources */,
+				AC6E56072965FE8500186038 /* QuizesModel.swift in Sources */,
 				AC6E55DD2965FB0700186038 /* QuizesScreenApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

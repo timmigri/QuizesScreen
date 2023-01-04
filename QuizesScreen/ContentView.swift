@@ -1,13 +1,8 @@
-//
-//  ContentView.swift
-//  QuizesScreen
-//
-//  Created by Артём Грищенко on 04.01.2023.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var quizes = QuizesViewModel()
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
