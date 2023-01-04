@@ -4,13 +4,17 @@ struct ContentView: View {
     @ObservedObject var quizes = QuizesViewModel()
     
     var body: some View {
-        Text("Some view")
-//        VStack {
-//            ForEach(quizes.widgets, id: \.self) { widget in
-//                Text("Title")
-//            }
-//        }
-//        .padding()
+        ScrollView {
+            ForEach(quizes.widgets, id: \.id) { item in
+                if let widget = item as? QuizesModel.ChoicesQuestion {
+                    ChoicesQuestionView(question: widget)
+                }
+                if let widget = item as? QuizesModel.RatingStarsQuestion {
+                    RatingStarsQuestionView(title: widget.title)
+                }
+                Divider()
+            }
+        }
     }
 }
 

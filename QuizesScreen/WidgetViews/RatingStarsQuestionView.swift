@@ -29,7 +29,7 @@ struct RatingStarsQuestionView: View {
                         }
                 }
             }
-        }
+        }.padding(15)
     }
     
     func animate() {
