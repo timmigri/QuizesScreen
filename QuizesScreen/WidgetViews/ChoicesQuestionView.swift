@@ -7,7 +7,7 @@ struct ChoicesQuestionView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            QuestionHead(title: question.question, numberCurrent: question.numberCurrent, numberAll: question.numberAll)
+            QuestionHeadView(title: question.title, numberCurrent: question.numberCurrent, numberAll: question.numberAll)
             ForEach(question.answers, id: \.self.0) { (answer, percent) in
                 HStack(alignment: .center, spacing: 5) {
                     Text(answer)
@@ -79,7 +79,7 @@ struct ChoicesQuestionView: View {
 
 struct ChoicesQuestionView_Previews: PreviewProvider {
     static var previews: some View {
-        ChoicesQuestionView(question: QuizesModel.ChoicesQuestion(numberCurrent: 1, numberAll: 1, question: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?", rightAnswer: "Он родился старым и молодел", answers: [("Он научился летать", 13), ("Он родился старым и молодел", 60), ("Он умел предсказывать будущее", 12), ("Он становился больше с каждым днём b nfrflsfl", 15)]))
-        ChoicesQuestionView(question: QuizesModel.ChoicesQuestion(numberCurrent: 1, numberAll: 1, question: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?", rightAnswer: "Он родился старым и молодел", answers: [("Он научился летать", 13), ("Он родился старым и молодел", 60), ("Он умел предсказывать будущее", 12), ("Он становился больше с каждым днём b nfrflsfl", 15)])).preferredColorScheme(.dark)
+        ChoicesQuestionView(question: QuizesModel.ChoicesQuestion(title: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?", numberCurrent: 1, numberAll: 1, rightAnswer: "Он родился старым и молодел", answers: [("Он научился летать", 13), ("Он родился старым и молодел", 60), ("Он умел предсказывать будущее", 12), ("Он становился больше с каждым днём b nfrflsfl", 15)]))
+        ChoicesQuestionView(question: QuizesModel.ChoicesQuestion(title: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?", numberCurrent: 1, numberAll: 1, rightAnswer: "Он родился старым и молодел", answers: [("Он научился летать", 13), ("Он родился старым и молодел", 60), ("Он умел предсказывать будущее", 12), ("Он становился больше с каждым днём b nfrflsfl", 15)])).preferredColorScheme(.dark)
     }
 }

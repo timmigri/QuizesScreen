@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QuestionHead: View {
+struct QuestionHeadView: View {
     var title: String? = nil
     var numberCurrent: Int? = nil
     var numberAll: Int? = nil

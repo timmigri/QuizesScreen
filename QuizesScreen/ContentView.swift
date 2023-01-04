@@ -4,13 +4,13 @@ struct ContentView: View {
     @ObservedObject var quizes = QuizesViewModel()
     
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
+        Text("Some view")
+//        VStack {
+//            ForEach(quizes.widgets, id: \.self) { widget in
+//                Text("Title")
+//            }
+//        }
+//        .padding()
     }
 }
 
