@@ -12,7 +12,7 @@ struct QuizesModel {
         let numberAll: Int
         let question: String
         let rightAnswer: String
-        let answers: [String]
+        let answers: [(String, Int)]
     }
     
     struct MatchQuestion : QuizWidget {

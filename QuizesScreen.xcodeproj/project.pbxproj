@@ -16,6 +16,8 @@
 		AC6E55FA2965FB0900186038 /* QuizesScreenUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E55F92965FB0900186038 /* QuizesScreenUITestsLaunchTests.swift */; };
 		AC6E56072965FE8500186038 /* QuizesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E56062965FE8500186038 /* QuizesModel.swift */; };
 		AC6E56092966016200186038 /* QuizesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E56082966016200186038 /* QuizesViewModel.swift */; };
+		AC6E560C296603E100186038 /* ChoicesQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E560B296603E100186038 /* ChoicesQuestionView.swift */; };
+		AC6E560E296608C100186038 /* UIHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E560D296608C100186038 /* UIHelpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		AC6E55F92965FB0900186038 /* QuizesScreenUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizesScreenUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		AC6E56062965FE8500186038 /* QuizesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizesModel.swift; sourceTree = "<group>"; };
 		AC6E56082966016200186038 /* QuizesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizesViewModel.swift; sourceTree = "<group>"; };
+		AC6E560B296603E100186038 /* ChoicesQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoicesQuestionView.swift; sourceTree = "<group>"; };
+		AC6E560D296608C100186038 /* UIHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,12 +102,14 @@
 		AC6E55DB2965FB0700186038 /* QuizesScreen */ = {
 			isa = PBXGroup;
 			children = (
+				AC6E560A296603AB00186038 /* WidgetViews */,
 				AC6E55DC2965FB0700186038 /* QuizesScreenApp.swift */,
 				AC6E55DE2965FB0700186038 /* ContentView.swift */,
-				AC6E55E02965FB0800186038 /* Assets.xcassets */,
-				AC6E55E22965FB0800186038 /* Preview Content */,
 				AC6E56062965FE8500186038 /* QuizesModel.swift */,
 				AC6E56082966016200186038 /* QuizesViewModel.swift */,
+				AC6E55E02965FB0800186038 /* Assets.xcassets */,
+				AC6E55E22965FB0800186038 /* Preview Content */,
+				AC6E560D296608C100186038 /* UIHelpers.swift */,
 			);
 			path = QuizesScreen;
 			sourceTree = "<group>";
@@ -131,6 +137,14 @@
 				AC6E55F92965FB0900186038 /* QuizesScreenUITestsLaunchTests.swift */,
 			);
 			path = QuizesScreenUITests;
+			sourceTree = "<group>";
+		};
+		AC6E560A296603AB00186038 /* WidgetViews */ = {
+			isa = PBXGroup;
+			children = (
+				AC6E560B296603E100186038 /* ChoicesQuestionView.swift */,
+			);
+			path = WidgetViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,7 +280,9 @@
 				AC6E55DF2965FB0700186038 /* ContentView.swift in Sources */,
 				AC6E56092966016200186038 /* QuizesViewModel.swift in Sources */,
 				AC6E56072965FE8500186038 /* QuizesModel.swift in Sources */,
+				AC6E560E296608C100186038 /* UIHelpers.swift in Sources */,
 				AC6E55DD2965FB0700186038 /* QuizesScreenApp.swift in Sources */,
+				AC6E560C296603E100186038 /* ChoicesQuestionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +448,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -460,6 +477,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
