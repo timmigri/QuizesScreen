@@ -14,7 +14,7 @@ struct RatingStarsQuestionView: View {
     @State var scales: [CGFloat] = [1, 1, 1, 1, 1]
     var body: some View {
         VStack {
-            QuestionHeadView(title: title)
+            QuestionHeadView(title: title, aligment: .center)
             HStack {
                 ForEach(1..<6) { index in
                     Image(systemName: iconName(index: index))

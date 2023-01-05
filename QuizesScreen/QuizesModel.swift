@@ -33,7 +33,7 @@ struct QuizesModel {
     struct MatchQuestion : QuizWidget {
         var id: Int
         var title: String?
-        let questions: [String:String]
+        let pairs: [String:String]
     }
     
     struct FillGapsWithChoicesQuestion: QuizWidget {

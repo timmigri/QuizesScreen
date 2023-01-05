@@ -20,6 +20,7 @@
 		AC6E560E296608C100186038 /* UIHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E560D296608C100186038 /* UIHelpers.swift */; };
 		AC6E56102966279900186038 /* QuestionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E560F2966279900186038 /* QuestionHeadView.swift */; };
 		AC6E561229662BE400186038 /* RatingStarsQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E561129662BE400186038 /* RatingStarsQuestionView.swift */; };
+		AC6FB8E129674E8F00DEB3A5 /* MatchQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6FB8E029674E8F00DEB3A5 /* MatchQuestionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		AC6E560D296608C100186038 /* UIHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIHelpers.swift; sourceTree = "<group>"; };
 		AC6E560F2966279900186038 /* QuestionHeadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionHeadView.swift; sourceTree = "<group>"; };
 		AC6E561129662BE400186038 /* RatingStarsQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingStarsQuestionView.swift; sourceTree = "<group>"; };
+		AC6FB8E029674E8F00DEB3A5 /* MatchQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchQuestionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 				AC6E560B296603E100186038 /* ChoicesQuestionView.swift */,
 				AC6E560F2966279900186038 /* QuestionHeadView.swift */,
 				AC6E561129662BE400186038 /* RatingStarsQuestionView.swift */,
+				AC6FB8E029674E8F00DEB3A5 /* MatchQuestionView.swift */,
 			);
 			path = WidgetViews;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 				AC6E560E296608C100186038 /* UIHelpers.swift in Sources */,
 				AC6E55DD2965FB0700186038 /* QuizesScreenApp.swift in Sources */,
 				AC6E561229662BE400186038 /* RatingStarsQuestionView.swift in Sources */,
+				AC6FB8E129674E8F00DEB3A5 /* MatchQuestionView.swift in Sources */,
 				AC6E560C296603E100186038 /* ChoicesQuestionView.swift in Sources */,
 				AC6E56102966279900186038 /* QuestionHeadView.swift in Sources */,
 			);
@@ -449,6 +453,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"QuizesScreen/Preview Content\"";
+				DEVELOPMENT_TEAM = XZ25FA7LUT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -478,6 +483,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"QuizesScreen/Preview Content\"";
+				DEVELOPMENT_TEAM = XZ25FA7LUT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
