@@ -22,9 +22,9 @@ struct MatchQuestionView: View {
                     VStack {
                         ForEach(Array(firstWords.enumerated()), id: \.element) { (index, word) in
                             renderWord(word: word, isSelected: index == firstWordsSelectedIndex) {
-                                //                            withAnimation(.easeOut(duration: 0.1)){
-                                firstWordsSelectedIndex = (index != firstWordsSelectedIndex ? index : nil)
-                                //                            }
+                                withAnimation(.easeOut(duration: 0.1)){
+                                    firstWordsSelectedIndex = (index != firstWordsSelectedIndex ? index : nil)
+                                }
                                 checkSelection()
                             }
                         }
@@ -43,6 +43,7 @@ struct MatchQuestionView: View {
                     .frame(maxWidth: .infinity)
                 }
                 wrongSelectionIcon
+                doneIcon
             }
         }
         .padding(15)
@@ -63,12 +64,16 @@ struct MatchQuestionView: View {
                     isMatchCorrect = true
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    clearSelection()
-                    firstWords.remove(at: firstIndex)
-                    secondWords.remove(at: secondIndex)
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        clearSelection()
+                        firstWords.remove(at: firstIndex)
+                        secondWords.remove(at: secondIndex)
+                    }
                 }
             } else {
-                isMatchCorrect = false
+                withAnimation(.easeOut(duration: 0.1)) {
+                    isMatchCorrect = false
+                }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     clearSelection()
                 }
@@ -98,6 +103,25 @@ struct MatchQuestionView: View {
             .font(.system(size: 50))
             .foregroundColor(.red)
             .opacity(opacity)
+            .animation(.easeInOut(duration: 0.3))
+    }
+    
+    var isFinished: Bool {
+        return firstWords.count == 0 && secondWords.count == 0
+    }
+    
+    var doneIcon : some View {
+        let to: CGFloat = isFinished ? 1 : 0
+        let opacity: CGFloat = isFinished ? 1 : 0
+        return Image(systemName: "checkmark")
+            .font(.system(size: 60))
+            .padding(20)
+            .foregroundColor(.green)
+            .overlay(
+                Circle().trim(from: 0, to: to).stroke(.green, lineWidth: 2)            .rotationEffect(.degrees(180))
+            )
+            .opacity(opacity)
+            .animation(.easeInOut(duration: 1))
     }
     
     func renderWord(word: String, isSelected: Bool, onTap: @escaping () -> Void) -> some View {
@@ -110,7 +134,11 @@ struct MatchQuestionView: View {
             .overlay(RoundedRectangle(cornerRadius: 20).stroke(color, lineWidth: 1.5))
             .scaleEffect(scale)
             .padding(.vertical, 3)
-            .onTapGesture(perform: onTap)
+            .onTapGesture {
+                if (isMatchCorrect == nil) {
+                    onTap()
+                }
+            }
     }
 }
 

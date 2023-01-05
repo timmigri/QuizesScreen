@@ -9,6 +9,9 @@ struct ContentView: View {
                 if let widget = item as? QuizesModel.ChoicesQuestion {
                     ChoicesQuestionView(question: widget)
                 }
+                if let widget = item as? QuizesModel.MatchQuestion {
+                    MatchQuestionView(question: widget)
+                }
                 if let widget = item as? QuizesModel.RatingStarsQuestion {
                     RatingStarsQuestionView(title: widget.title)
                 }
