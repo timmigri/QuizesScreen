@@ -5,6 +5,7 @@ struct ContentView: View {
     
     var body: some View {
         ScrollView {
+            FillGapsQuestionView()
             ForEach(quizes.widgets, id: \.id) { item in
                 if let widget = item as? QuizesModel.ChoicesQuestion {
                     ChoicesQuestionView(question: widget)
