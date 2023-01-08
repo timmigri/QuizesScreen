@@ -1,5 +1,11 @@
 import SwiftUI
 
+extension String {
+    func trunc(length: Int, trailing: String = "…") -> String {
+        return (self.count > length) ? self.prefix(length) + trailing : self
+    }
+}
+
 func hexStringToUIColor (hex:String) -> Color {
     var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 
@@ -35,5 +41,16 @@ struct RoundedCorner: Shape {
 extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )
+    }
+}
+
+extension MatchQuestionView {
+    struct WordWidthPreferenceKey: PreferenceKey {
+        static let defaultValue: CGFloat = 0
+
+        static func reduce(value: inout CGFloat,
+                           nextValue: () -> CGFloat) {
+            value = max(value, nextValue())
+        }
     }
 }

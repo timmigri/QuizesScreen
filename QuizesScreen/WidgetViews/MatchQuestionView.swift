@@ -7,6 +7,8 @@ struct MatchQuestionView: View {
     @State var firstWordsSelectedIndex: Int? = nil
     @State var secondWordsSelectedIndex: Int? = nil
     @State var isMatchCorrect: Bool? = nil
+    @State var wordMaxWidth: CGFloat?
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     
     init(question: QuizesModel.MatchQuestion) {
         self.question = question
@@ -18,7 +20,7 @@ struct MatchQuestionView: View {
         VStack {
             QuestionHeadView(title: question.title)
             ZStack {
-                HStack {
+                HStack(spacing: 50) {
                     VStack {
                         ForEach(Array(firstWords.enumerated()), id: \.element) { (index, word) in
                             renderWord(word: word, isSelected: index == firstWordsSelectedIndex) {
@@ -41,6 +43,9 @@ struct MatchQuestionView: View {
                         }
                     }
                     .frame(maxWidth: .infinity)
+                }
+                .onPreferenceChange(WordWidthPreferenceKey.self) {
+                    wordMaxWidth = $0
                 }
                 wrongSelectionIcon
                 doneIcon
@@ -83,7 +88,7 @@ struct MatchQuestionView: View {
     
     func getWordColor(isSelected: Bool) -> Color {
         if (!isSelected) {
-            return .black
+            return colorScheme == .light ? .black : .white
         }
         if let isCorrect = isMatchCorrect {
             if (isCorrect) {
@@ -127,11 +132,19 @@ struct MatchQuestionView: View {
     func renderWord(word: String, isSelected: Bool, onTap: @escaping () -> Void) -> some View {
         let color = getWordColor(isSelected: isSelected)
         let scale = isSelected ? 1.05 : 1
-        return Text(word)
+        return Text(word.trunc(length: 18))
+            .lineLimit(1)
             .foregroundColor(color)
             .font(.system(size: 18))
             .padding(10)
+            .frame(width: wordMaxWidth)
             .overlay(RoundedRectangle(cornerRadius: 20).stroke(color, lineWidth: 1.5))
+            .background(GeometryReader { geometry in
+                Color.clear.preference(
+                    key: WordWidthPreferenceKey.self,
+                    value: geometry.size.width
+                )
+            })
             .scaleEffect(scale)
             .padding(.vertical, 3)
             .onTapGesture {

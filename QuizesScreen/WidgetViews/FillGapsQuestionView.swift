@@ -38,41 +38,7 @@ struct FillGapsQuestionView: View {
         GeometryReader { geometry in
             if (items.count > 0) {
                 ZStack(alignment: .topLeading) {
-                    ForEach(items, id: \.self) { item in
-                        Group {
-                            switch item {
-                            case .text(_, let text):
-                                Text(text)
-                                    .alignmentGuide(.leading) { d in
-                                        if (abs(xAligment - d.width - 2 * 5) > geometry.size.width) {
-                                            xAligment = 0
-                                            yAligment -= d.height
-                                        }
-                                        let res = xAligment
-                                        if (items.last!.getId() == item.getId()) {
-                                            xAligment = 0
-                                        } else {
-                                            xAligment -= d.width
-                                        }
-                                        print(res)
-                                        return res
-                                    }
-                                    .alignmentGuide(.top) { d in
-                                        let res = yAligment
-                                        if (items.last!.getId() == item.getId()) {
-                                            yAligment = 0
-                                        }
-                                        return res
-                                    }
-                            case .input(_, let key):
-                                TextField("", text: $value)
-                                    .overlay(Divider().offset(y: 3), alignment: .bottom)
-                                    .onChange(of: value) {
-                                        textFieldValues[key] = $0
-                                    }
-                            }
-                        }
-                    }
+                    renderItems(geometry: geometry)
 //                    .alignmentGuide(.leading) { d in
 //                        if (abs(xAligment - d.width - 2 * 5) > geometry.size.width) {
 //                            xAligment = 0
@@ -96,6 +62,44 @@ struct FillGapsQuestionView: View {
                 }
             }
         }.padding(15)
+    }
+    
+    func renderItems(geometry: GeometryProxy) -> some View {
+        return ForEach(items, id: \.self) { item in
+            Group {
+                switch item {
+                case .text(_, let text):
+                    Text(text)
+                        .alignmentGuide(.leading) { d in
+                            if (abs(xAligment - d.width - 2 * 5) > geometry.size.width) {
+                                xAligment = 0
+                                yAligment -= d.height
+                            }
+                            let res = xAligment
+                            if (items.last!.getId() == item.getId()) {
+                                xAligment = 0
+                            } else {
+                                xAligment -= d.width
+                            }
+                            print(d.width, geometry.size.width)
+                            return res
+                        }
+                        .alignmentGuide(.top) { d in
+                            let res = yAligment
+                            if (items.last!.getId() == item.getId()) {
+                                yAligment = 0
+                            }
+                            return res
+                        }
+                case .input(_, let key):
+                    TextField("", text: $value)
+                        .overlay(Divider().offset(y: 3), alignment: .bottom)
+                        .onChange(of: value) {
+                            textFieldValues[key] = $0
+                        }
+                }
+            }
+        }
     }
     
     func parseText() -> [Item]{
