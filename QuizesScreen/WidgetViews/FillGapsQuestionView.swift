@@ -23,11 +23,9 @@ struct FillGapsQuestionView: View {
             }
         }
     }
-    let text = "Заполните{key1}пропуски{key2}\n{key3}Какой-то текст дальше..."
+    let text = "Заполните{key1}пропуски{key2}в тексте{key3}Какой-то текст дальше..."
     @State var value = ""
     @State var textFieldValues: [String: String] = ["key1":"123", "key2": "1", "key3":"abc"]
-    @State var xAligment: CGFloat = .zero
-    @State var yAligment: CGFloat = .zero
     @State var items: [Item] = []
     
     init() {
@@ -39,65 +37,49 @@ struct FillGapsQuestionView: View {
             if (items.count > 0) {
                 ZStack(alignment: .topLeading) {
                     renderItems(geometry: geometry)
-//                    .alignmentGuide(.leading) { d in
-//                        if (abs(xAligment - d.width - 2 * 5) > geometry.size.width) {
-//                            xAligment = 0
-//                            yAligment -= d.height
-//                        }
-//                        let res = xAligment
-//                        if (items.last!.getId() == item.getId()) {
-//                            xAligment = 0
-//                        } else {
-//                            xAligment -= d.width
-//                        }
-//                        return res
-//                    }
-//                    .alignmentGuide(.top) { d in
-//                        let res = yAligment
-//                        if (items.last!.getId() == item.getId()) {
-//                            yAligment = 0
-//                        }
-//                        return res
-//                    }
                 }
             }
         }.padding(15)
     }
     
     func renderItems(geometry: GeometryProxy) -> some View {
+        var xAligment: CGFloat = .zero
+        var yAligment: CGFloat = .zero
         return ForEach(items, id: \.self) { item in
             Group {
                 switch item {
                 case .text(_, let text):
-                    Text(text)
-                        .alignmentGuide(.leading) { d in
-                            if (abs(xAligment - d.width - 2 * 5) > geometry.size.width) {
-                                xAligment = 0
-                                yAligment -= d.height
-                            }
-                            let res = xAligment
-                            if (items.last!.getId() == item.getId()) {
-                                xAligment = 0
-                            } else {
-                                xAligment -= d.width
-                            }
-                            print(d.width, geometry.size.width)
-                            return res
-                        }
-                        .alignmentGuide(.top) { d in
-                            let res = yAligment
-                            if (items.last!.getId() == item.getId()) {
-                                yAligment = 0
-                            }
-                            return res
-                        }
+                    Text(text).offset(y: 5)
                 case .input(_, let key):
                     TextField("", text: $value)
-                        .overlay(Divider().offset(y: 3), alignment: .bottom)
+                        .frame(width: 100)
+                        .overlay(Divider(), alignment: .bottom)
                         .onChange(of: value) {
                             textFieldValues[key] = $0
                         }
+                        .padding(.horizontal, 10)
                 }
+            }
+            .padding(.vertical, 7)
+            .alignmentGuide(.leading) { d in
+                if (abs(xAligment - d.width - 2 * 5) > geometry.size.width) {
+                    xAligment = 0
+                    yAligment -= d.height
+                }
+                let res = xAligment
+                if (items.last!.getId() == item.getId()) {
+                    xAligment = 0
+                } else {
+                    xAligment -= d.width
+                }
+                return res
+            }
+            .alignmentGuide(.top) { d in
+                let res = yAligment
+                if (items.last!.getId() == item.getId()) {
+                    yAligment = 0
+                }
+                return res
             }
         }
     }
@@ -112,7 +94,7 @@ struct FillGapsQuestionView: View {
                 cur = ""
                 counter += 1
             } else if (char == "}") {
-//                items.append(.input(id: counter, key: cur))
+                items.append(.input(id: counter, key: cur))
                 cur = ""
                 counter += 1
             } else {
