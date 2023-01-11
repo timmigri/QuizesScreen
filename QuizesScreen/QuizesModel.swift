@@ -47,6 +47,7 @@ struct QuizesModel {
         var id: Int
         var title: String?
         let text: String
+        let answers: [String: String]
     }
     
     struct RatingStarsQuestion : QuizWidget {
