@@ -46,7 +46,7 @@ struct QuizesModel {
     struct FillGapsQuestion: QuizWidget {
         var id: Int
         var title: String?
-        let text: [String?]
+        let text: String
     }
     
     struct RatingStarsQuestion : QuizWidget {
