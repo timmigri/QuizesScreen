@@ -1,13 +1,14 @@
 import SwiftUI
 
 struct ChoicesQuestionView: View {
-    @State var selectedAnswer: String? = nil
     let question: QuizesModel.ChoicesQuestion
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     
+    @State var selectedAnswer: String? = nil
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            QuestionHeadView(title: question.title, numberCurrent: question.numberCurrent, numberAll: question.numberAll)
+            QuestionHeadView(question: question)
             ForEach(question.answers, id: \.self.0) { (answer, percent) in
                 HStack(alignment: .center, spacing: 5) {
                     Text(answer)
@@ -51,14 +52,12 @@ struct ChoicesQuestionView: View {
     }
     
     func answerBackground(percent: Int, opacity: CGFloat) -> some View {
-        let color = colorScheme == .light ? Constants.Answer.backgroundColor : Constants.Answer.darkModeBackgroundColor
-        let finishedColor = colorScheme == .light ? Constants.Answer.finishedBackgroundColor : Constants.Answer.darkModeFinishedBackgroundColor
         let cornerRadius = CGFloat(5)
         let coef = isFinished ? CGFloat(percent) / 100 : 0
         return GeometryReader { geometry in
             HStack(spacing: 0){
-                Rectangle().fill(finishedColor).frame(width: coef * geometry.size.width).cornerRadius(cornerRadius, corners: [.topLeft, .bottomLeft]).opacity(opacity)
-                Rectangle().fill(color).cornerRadius(cornerRadius, corners: [.topRight, .bottomRight]).opacity(opacity)
+                Rectangle().fill(Constants.Answer.finishedBackgroundColor(colorScheme)).frame(width: coef * geometry.size.width).cornerRadius(cornerRadius, corners: [.topLeft, .bottomLeft]).opacity(opacity)
+                Rectangle().fill(Constants.Answer.backgroundColor(colorScheme)).cornerRadius(cornerRadius, corners: [.topRight, .bottomRight]).opacity(opacity)
             }
         }
     }
@@ -69,17 +68,26 @@ struct ChoicesQuestionView: View {
             static let color = Color.gray
         }
         struct Answer {
-            static let backgroundColor = hexStringToUIColor(hex: "#e4ebf5")
-            static let finishedBackgroundColor = hexStringToUIColor(hex: "#d0dff5")
-            static let darkModeBackgroundColor = hexStringToUIColor(hex: "#1e2530")
-            static let darkModeFinishedBackgroundColor = hexStringToUIColor(hex: "#010f24")
+            static func backgroundColor(_ colorScheme: ColorScheme) -> Color {
+                let light = "#e4ebf5"
+                let dark = "#1e2530"
+                return hexStringToUIColor(hex: (colorScheme == .light ? light : dark))
+            }
+            static func finishedBackgroundColor(_ colorScheme: ColorScheme) -> Color {
+                let light = "#d0dff5"
+                let dark = "#010f24"
+                return hexStringToUIColor(hex: (colorScheme == .light ? light : dark))
+            }
         }
     }
 }
 
 struct ChoicesQuestionView_Previews: PreviewProvider {
     static var previews: some View {
-        ChoicesQuestionView(question: QuizesModel.ChoicesQuestion(id: 1, title: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?", numberCurrent: 1, numberAll: 1, rightAnswer: "Он родился старым и молодел", answers: [("Он научился летать", 13), ("Он родился старым и молодел", 60), ("Он умел предсказывать будущее", 12), ("Он становился больше с каждым днём", 15)]))
-        ChoicesQuestionView(question: QuizesModel.ChoicesQuestion(id: 1, title: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?", numberCurrent: 1, numberAll: 1, rightAnswer: "Он родился старым и молодел", answers: [("Он научился летать", 13), ("Он родился старым и молодел", 60), ("Он умел предсказывать будущее", 12), ("Он становился больше с каждым днём", 15)])).preferredColorScheme(.dark)
+        let question = QuizesModel.ChoicesQuestion(id: 1, title: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?", counterCurrent: 1, counterAll: 1, rightAnswer: "Он родился старым и молодел", answers: [("Он научился летать", 13), ("Он родился старым и молодел", 60), ("Он умел предсказывать будущее", 12), ("Он становился больше с каждым днём", 15)])
+        return Group {
+            ChoicesQuestionView(question: question)
+            ChoicesQuestionView(question: question).preferredColorScheme(.dark)
+        }
     }
 }

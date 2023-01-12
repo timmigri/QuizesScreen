@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct RatingStarsQuestionView: View {
-    var title: String? = nil
+    let question: QuizesModel.RatingStarsQuestion
     
     @State var selectedRating: Int? = nil
     @State var scales: [CGFloat] = [1, 1, 1, 1, 1]
+    
     var body: some View {
         VStack {
-            QuestionHeadView(title: title, aligment: .center)
+            QuestionHeadView(question: question)
             HStack {
                 ForEach(1..<6) { index in
                     Image(systemName: iconName(index: index))
@@ -75,7 +76,10 @@ struct RatingStarsQuestionView: View {
 
 struct RatingStarsQuestionView_Previews: PreviewProvider {
     static var previews: some View {
-        RatingStarsQuestionView(title: "Оцените данный пост")
-        RatingStarsQuestionView().preferredColorScheme(.dark)
+        let question = QuizesModel.RatingStarsQuestion(id: 1, title: nil, counterCurrent: nil, counterAll: nil)
+        return Group {
+            RatingStarsQuestionView(question: question)
+            RatingStarsQuestionView(question: question).preferredColorScheme(.dark)
+        }
     }
 }

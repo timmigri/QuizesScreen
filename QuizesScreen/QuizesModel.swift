@@ -1,8 +1,10 @@
 import Foundation
 
 protocol QuizWidget : Hashable {
-    var id: Int { get set }
-    var title: String? { get set }
+    var id: Int { get }
+    var title: String? { get }
+    var counterCurrent: Int? { get }
+    var counterAll: Int? { get }
 }
 
 
@@ -10,10 +12,11 @@ struct QuizesModel {
     private(set) var widgets: [any QuizWidget]
     
     struct ChoicesQuestion : QuizWidget {
-        var id: Int
-        var title: String?
-        let numberCurrent: Int
-        let numberAll: Int
+        let id: Int
+        let title: String?
+        let counterCurrent: Int?
+        let counterAll: Int?
+        
         let rightAnswer: String
         let answers: [(String, Int)]
         
@@ -24,35 +27,46 @@ struct QuizesModel {
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
             hasher.combine(title)
-            hasher.combine(numberCurrent)
-            hasher.combine(numberAll)
+            hasher.combine(counterCurrent)
+            hasher.combine(counterAll)
             hasher.combine(rightAnswer)
         }
     }
     
     struct MatchQuestion : QuizWidget {
-        var id: Int
-        var title: String?
+        let id: Int
+        let title: String?
+        let counterCurrent: Int?
+        let counterAll: Int?
+        
         let pairs: [String:String]
     }
     
     struct FillGapsWithChoicesQuestion: QuizWidget {
-        var id: Int
-        var title: String?
+        let id: Int
+        let title: String?
+        let counterCurrent: Int?
+        let counterAll: Int?
+        
         let text: [String]
         let choices: [String?]
     }
     
     struct FillGapsQuestion: QuizWidget {
-        var id: Int
-        var title: String?
+        let id: Int
+        let title: String?
+        let counterCurrent: Int?
+        let counterAll: Int?
+        
         let text: String
         let answers: [String: String]
     }
     
     struct RatingStarsQuestion : QuizWidget {
-        var id: Int
-        var title: String?
+        let id: Int
+        let title: String?
+        let counterCurrent: Int?
+        let counterAll: Int?
     }
 
     mutating func setWidgets(widgets: [any QuizWidget]) {

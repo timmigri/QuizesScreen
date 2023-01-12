@@ -8,19 +8,16 @@
 import SwiftUI
 
 struct QuestionHeadView: View {
-    var title: String? = nil
-    var numberCurrent: Int? = nil
-    var numberAll: Int? = nil
-    var aligment: HorizontalAlignment = .leading
+    let question: any QuizWidget
     
     var body: some View {
-        VStack(alignment: aligment) {
-            if let numberCurrent = numberCurrent, let numberAll = numberAll {
-                Text("Вопрос \(numberCurrent)/\(numberAll)")
+        VStack {
+            if let counterCurrent = question.counterCurrent, let counterAll = question.counterAll {
+                Text("Вопрос \(counterCurrent)/\(counterAll)")
                     .foregroundColor(.gray)
                     .padding(.bottom, 10)
             }
-            if let title = title {
+            if let title = question.title {
                 Text(title)
                     .font(.title2)
                     .padding(.bottom, 20)

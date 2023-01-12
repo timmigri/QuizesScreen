@@ -22,6 +22,7 @@
 		AC6E561229662BE400186038 /* RatingStarsQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6E561129662BE400186038 /* RatingStarsQuestionView.swift */; };
 		AC6FB8E129674E8F00DEB3A5 /* MatchQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6FB8E029674E8F00DEB3A5 /* MatchQuestionView.swift */; };
 		AC6FB8E32967812200DEB3A5 /* FillGapsQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6FB8E22967812200DEB3A5 /* FillGapsQuestionView.swift */; };
+		AC8F4DA1296F8693000AAD2F /* FillGaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC8F4DA0296F8693000AAD2F /* FillGaps.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		AC6E561129662BE400186038 /* RatingStarsQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingStarsQuestionView.swift; sourceTree = "<group>"; };
 		AC6FB8E029674E8F00DEB3A5 /* MatchQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchQuestionView.swift; sourceTree = "<group>"; };
 		AC6FB8E22967812200DEB3A5 /* FillGapsQuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillGapsQuestionView.swift; sourceTree = "<group>"; };
+		AC8F4DA0296F8693000AAD2F /* FillGaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillGaps.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,13 +152,22 @@
 		AC6E560A296603AB00186038 /* WidgetViews */ = {
 			isa = PBXGroup;
 			children = (
+				AC8F4D9F296F8681000AAD2F /* FillGaps */,
 				AC6E560B296603E100186038 /* ChoicesQuestionView.swift */,
 				AC6E560F2966279900186038 /* QuestionHeadView.swift */,
 				AC6E561129662BE400186038 /* RatingStarsQuestionView.swift */,
 				AC6FB8E029674E8F00DEB3A5 /* MatchQuestionView.swift */,
-				AC6FB8E22967812200DEB3A5 /* FillGapsQuestionView.swift */,
 			);
 			path = WidgetViews;
+			sourceTree = "<group>";
+		};
+		AC8F4D9F296F8681000AAD2F /* FillGaps */ = {
+			isa = PBXGroup;
+			children = (
+				AC8F4DA0296F8693000AAD2F /* FillGaps.swift */,
+				AC6FB8E22967812200DEB3A5 /* FillGapsQuestionView.swift */,
+			);
+			path = FillGaps;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,6 +301,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC6FB8E32967812200DEB3A5 /* FillGapsQuestionView.swift in Sources */,
+				AC8F4DA1296F8693000AAD2F /* FillGaps.swift in Sources */,
 				AC6E55DF2965FB0700186038 /* ContentView.swift in Sources */,
 				AC6E56092966016200186038 /* QuizesViewModel.swift in Sources */,
 				AC6E56072965FE8500186038 /* QuizesModel.swift in Sources */,

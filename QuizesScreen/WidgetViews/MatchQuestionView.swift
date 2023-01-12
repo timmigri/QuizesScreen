@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MatchQuestionView: View {
     let question: QuizesModel.MatchQuestion
+    
     @State var firstWords: [String]
     @State var secondWords: [String]
     @State var firstWordsSelectedIndex: Int? = nil
@@ -18,7 +19,7 @@ struct MatchQuestionView: View {
     
     var body: some View {
         VStack {
-            QuestionHeadView(title: question.title)
+            QuestionHeadView(question: question)
             ZStack {
                 HStack(spacing: 50) {
                     VStack {
@@ -157,7 +158,11 @@ struct MatchQuestionView: View {
 
 struct MatchQuestionView_Previews: PreviewProvider {
     static var previews: some View {
-        MatchQuestionView(question: QuizesModel.MatchQuestion(id: 1, title: "Установите соответствие между английскими и русскими словами", pairs: ["shop": "магазин", "magazine": "журнал", "future": "будущее", "mood": "настроение"]))
-        MatchQuestionView(question: QuizesModel.MatchQuestion(id: 1, title: "Установите соответствие между английскими и русскими словами", pairs: ["shop": "магазин", "magazine": "журнал", "future": "будущее", "mood": "настроение"])).preferredColorScheme(.dark)
+        let question = QuizesModel.MatchQuestion(id: 1, title: "Установите соответствие между английскими и русскими словами", counterCurrent: nil, counterAll: nil, pairs: ["shop": "магазин", "magazine": "журнал", "future": "будущее", "mood": "настроение"])
+        
+        return Group {
+            MatchQuestionView(question: question)
+            MatchQuestionView(question: question).preferredColorScheme(.dark)
+        }
     }
 }

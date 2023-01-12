@@ -2,51 +2,44 @@ import SwiftUI
 
 struct FillGapsQuestionView: View {
     let question: QuizesModel.FillGapsQuestion
-    private struct Item {
-        let id: Int
-        // if key is nil -> Text, otherwise -> TextField
-        let key: String?
-        // Text -> text, TextField -> current text field value
-        var value: String
-        
-        var isTextField: Bool {
-            return key != nil
-        }
-        
-        // Only for TextField
-        var isCorrect: Bool? = nil
-        var isDisabled: Bool = false
-        var color: Color {
-            if isCorrect == nil { return .gray }
-            if (isCorrect!) { return .green }
-            return .red
-        }
-        // for TextField animation
-        var attempts: Int = 0
-    }
+    let screenGeometry: GeometryProxy
     
-    @State private var value = ""
-    @State private var items: [Item] = []
+    @State private var items: [FillGapsItem] = []
     @State private var isFinished: Bool = false
     
-    init(question: QuizesModel.FillGapsQuestion) {
+    init(question: QuizesModel.FillGapsQuestion, screenGeometry: GeometryProxy) {
         self.question = question
-        _items = State(initialValue: parseText(question.text))
+        self.screenGeometry = screenGeometry
+        _items = State(initialValue: convertTextToFillGapsItems(question.text))
     }
     
     var body: some View {
-        VStack {
-            QuestionHeadView(title: question.title)
-            GeometryReader { geometry in
-                if (items.count > 0) {
-                    renderItems(geometry: geometry)
-                    
+        VStack(alignment: .leading) {
+            QuestionHeadView(question: question)
+            if (items.count > 0) {
+                renderItems()
+                HStack {
+                    Button("Проверить", action: check)
+                    .foregroundColor(.blue)
+                    .padding(.vertical, 7)
+                    .padding(.horizontal, 15)
+                    .overlay(RoundedRectangle(cornerRadius: 7).stroke(.blue))
+                    .padding(.top, 15)
+                    .scaleEffect(isFinished ? 0 : 1)
+        
+                    Button("Ответы", action: showAnswers)
+                    .foregroundColor(.blue)
+                    .padding(.vertical, 7)
+                    .padding(.horizontal, 15)
+                    .overlay(RoundedRectangle(cornerRadius: 7).stroke(.blue))
+                    .padding(.top, 15)
+                    .scaleEffect(isFinished ? 0 : 1)
                 }
             }
         }.padding(15)
     }
     
-    func renderItems(geometry: GeometryProxy) -> some View {
+    func renderItems() -> some View {
         var xAligment: CGFloat = .zero
         var yAligment: CGFloat = .zero
         var itemsHeight: CGFloat = 0
@@ -74,7 +67,7 @@ struct FillGapsQuestionView: View {
                 }
                 .padding(.vertical, 7)
                 .alignmentGuide(.leading) { d in
-                    if (abs(xAligment - d.width - 2 * 5) > geometry.size.width) {
+                    if (abs(xAligment - d.width - 2 * 5) > screenGeometry.size.width) {
                         xAligment = 0
                         yAligment -= d.height
                     }
@@ -96,35 +89,35 @@ struct FillGapsQuestionView: View {
                 }
             }
             
-            Button("Проверить", action: check)
-            .foregroundColor(.blue)
-            .padding(.vertical, 7)
-            .padding(.horizontal, 15)
-            .overlay(RoundedRectangle(cornerRadius: 7).stroke(.blue))
-            .padding(.top, 15)
-            .scaleEffect(isFinished ? 0 : 1)
-            .alignmentGuide(.leading) { d in
-                checkButtonWidth = d.width
-                return 0
-            }
-            .alignmentGuide(.top) { d in
-                return -itemsHeight
-            }
-            
-            Button("Ответы", action: showAnswers)
-            .foregroundColor(.blue)
-            .padding(.vertical, 7)
-            .padding(.horizontal, 15)
-            .overlay(RoundedRectangle(cornerRadius: 7).stroke(.blue))
-            .padding(.top, 15)
-            .scaleEffect(isFinished ? 0 : 1)
-            .alignmentGuide(.leading) { d in
-                return -checkButtonWidth - 20
-            }
-            .alignmentGuide(.top) { d in
-                return -itemsHeight
-            }
-        }
+//            Button("Проверить", action: check)
+//            .foregroundColor(.blue)
+//            .padding(.vertical, 7)
+//            .padding(.horizontal, 15)
+//            .overlay(RoundedRectangle(cornerRadius: 7).stroke(.blue))
+//            .padding(.top, 15)
+//            .scaleEffect(isFinished ? 0 : 1)
+//            .alignmentGuide(.leading) { d in
+//                checkButtonWidth = d.width
+//                return 0
+//            }
+//            .alignmentGuide(.top) { d in
+//                return -itemsHeight
+//            }
+//
+//            Button("Ответы", action: showAnswers)
+//            .foregroundColor(.blue)
+//            .padding(.vertical, 7)
+//            .padding(.horizontal, 15)
+//            .overlay(RoundedRectangle(cornerRadius: 7).stroke(.blue))
+//            .padding(.top, 15)
+//            .scaleEffect(isFinished ? 0 : 1)
+//            .alignmentGuide(.leading) { d in
+//                return -checkButtonWidth - 20
+//            }
+//            .alignmentGuide(.top) { d in
+//                return -itemsHeight
+//            }
+        }.border(.red).frame(maxWidth: .infinity)
     }
     
     private func check() {
@@ -160,7 +153,7 @@ struct FillGapsQuestionView: View {
         for index in items.indices {
             let item = items[index]
             if (!item.isTextField) { continue }
-            if (item.isCorrect ?? true) { continue }
+            if (item.isCorrect ?? false) { continue }
             if let answer = question.answers[item.key!] {
                 items[index].isCorrect = false
                 items[index].value = answer
@@ -170,37 +163,23 @@ struct FillGapsQuestionView: View {
             isFinished = true
         }
     }
-    
-    private func parseText(_ text: String) -> [Item]{
-        var items = [Item]()
-        var cur = ""
-        var counter = 0
-        for char in text {
-            if (char == "{") {
-                items.append(Item(id: counter, key: nil, value: cur))
-                cur = ""
-                counter += 1
-            } else if (char == "}") {
-                items.append(Item(id: counter, key: cur, value: ""))
-                cur = ""
-                counter += 1
-            } else {
-                cur.append(char)
-            }
-        }
-        if (cur.count > 0) {
-            items.append(Item(id: counter, key: nil, value: cur))
-        }
-        return items
-    }
 }
 
 struct FillGapsQuestionView_Previews: PreviewProvider {
     static var previews: some View {
         let text = "Заполните{key1}пропуски{key2}в тексте{key3}Какой-то текст дальше..."
         let answers: [String:String] = ["key1": "abc", "key2": "kek", "key3": "lol"]
-        let question = QuizesModel.FillGapsQuestion(id: 1, text: text, answers: answers)
-        return FillGapsQuestionView(question: question)
+        let question = QuizesModel.FillGapsQuestion(id: 1, title: "Заполните пропуски", counterCurrent: nil, counterAll: nil, text: text, answers: answers)
+        
+        return Group {
+            GeometryReader { geometry in
+                FillGapsQuestionView(question: question, screenGeometry: geometry)
+            }
+            GeometryReader { geometry in
+                FillGapsQuestionView(question: question, screenGeometry: geometry)
+                    .preferredColorScheme(.dark)
+            }
+        }
     }
 }
 
