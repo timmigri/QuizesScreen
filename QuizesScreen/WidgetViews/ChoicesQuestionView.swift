@@ -4,51 +4,51 @@ struct ChoicesQuestionView: View {
     let question: QuizesModel.ChoicesQuestion
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     
-    @State var selectedAnswer: String? = nil
+    @State var selectedAnswerId: Int? = nil
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             QuestionHeadView(question: question)
-            ForEach(question.answers, id: \.self.0) { (answer, percent) in
+            ForEach(question.answers, id: \.self.id) { answer in
                 HStack(alignment: .center, spacing: 5) {
-                    Text(answer)
-                        .opacity(calcOpacity(answer: answer))
+                    Text(answer.title)
+                        .opacity(calcOpacity(answerId: answer.id))
                     Spacer()
-                    if (question.rightAnswer == answer) {
+                    if (question.rightAnswerId == answer.id) {
                         Image(systemName: "checkmark")
                             .foregroundColor(.green)
-                            .opacity(calcOpacity(answer: answer, inverted: true))
+                            .opacity(calcOpacity(answerId: answer.id, inverted: true))
                     } else {
                         Image(systemName: "xmark")
                             .foregroundColor(.red)
-                            .opacity(calcOpacity(answer: answer, inverted: true))
+                            .opacity(calcOpacity(answerId: answer.id, inverted: true))
                     }
-                    Text("\(percent)%")
+                    Text("\(answer.percent)%")
                         .font(.body.weight(.medium))
-                        .opacity(calcOpacity(answer: answer, inverted: true))
+                        .opacity(calcOpacity(answerId: answer.id, inverted: true))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(10)
-                .background(answerBackground(percent: percent, opacity: calcOpacity(answer: answer)))
+                .background(answerBackground(percent: answer.percent, opacity: calcOpacity(answerId: answer.id)))
                 .onTapGesture {
-                    if (selectedAnswer == nil) {
+                    if (selectedAnswerId == nil) {
                         withAnimation {
-                            selectedAnswer = answer
+                            selectedAnswerId = answer.id
                         }
                     }
                 }
             }
-        }.padding(15)
+        }.padding(GlobalConstants.quizesWidgetPadding)
     }
     
-    func calcOpacity(answer: String, inverted: Bool = false) -> CGFloat {
+    func calcOpacity(answerId: Int, inverted: Bool = false) -> CGFloat {
         let defaultOpacity: CGFloat = inverted ? 0 : 1
-        let finishedOpacity: CGFloat = selectedAnswer == answer ? 1 : Constants.finishedOpacity
+        let finishedOpacity: CGFloat = selectedAnswerId == answerId ? 1 : Constants.finishedOpacity
         return isFinished ? finishedOpacity : defaultOpacity
     }
     
     var isFinished: Bool {
-        selectedAnswer != nil
+        selectedAnswerId != nil
     }
     
     func answerBackground(percent: Int, opacity: CGFloat) -> some View {
@@ -56,8 +56,15 @@ struct ChoicesQuestionView: View {
         let coef = isFinished ? CGFloat(percent) / 100 : 0
         return GeometryReader { geometry in
             HStack(spacing: 0){
-                Rectangle().fill(Constants.Answer.finishedBackgroundColor(colorScheme)).frame(width: coef * geometry.size.width).cornerRadius(cornerRadius, corners: [.topLeft, .bottomLeft]).opacity(opacity)
-                Rectangle().fill(Constants.Answer.backgroundColor(colorScheme)).cornerRadius(cornerRadius, corners: [.topRight, .bottomRight]).opacity(opacity)
+                Rectangle()
+                    .fill(Constants.Answer.finishedBackgroundColor(colorScheme))
+                    .frame(width: coef * geometry.size.width)
+                    .cornerRadius(cornerRadius, corners: [.topLeft, .bottomLeft])
+                    .opacity(opacity)
+                Rectangle()
+                    .fill(Constants.Answer.backgroundColor(colorScheme))
+                    .cornerRadius(cornerRadius, corners: [.topRight, .bottomRight])
+                    .opacity(opacity)
             }
         }
     }
@@ -84,7 +91,19 @@ struct ChoicesQuestionView: View {
 
 struct ChoicesQuestionView_Previews: PreviewProvider {
     static var previews: some View {
-        let question = QuizesModel.ChoicesQuestion(id: 1, title: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?", counterCurrent: 1, counterAll: 1, rightAnswer: "Он родился старым и молодел", answers: [("Он научился летать", 13), ("Он родился старым и молодел", 60), ("Он умел предсказывать будущее", 12), ("Он становился больше с каждым днём", 15)])
+        let question = QuizesModel.ChoicesQuestion(
+            id: 1,
+            title: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?",
+            counterCurrent: 1,
+            counterAll: 1,
+            answers: [
+                QuizesModel.ChoicesQuestion.Answer(id: 1, title: "Он научился летать", percent: 13),
+                QuizesModel.ChoicesQuestion.Answer(id: 2, title: "Он родился старым и молодел", percent: 60),
+                QuizesModel.ChoicesQuestion.Answer(id: 3, title: "Он умел предсказывать будущее", percent: 12),
+                QuizesModel.ChoicesQuestion.Answer(id: 4, title: "Он становился больше с каждым днём", percent: 15)
+            ],
+            rightAnswerId: 1
+        )
         return Group {
             ChoicesQuestionView(question: question)
             ChoicesQuestionView(question: question).preferredColorScheme(.dark)

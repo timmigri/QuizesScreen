@@ -10,14 +10,86 @@ class QuizesViewModel : ObservableObject {
     
     func generateTestWidgets() -> [any QuizWidget] {
         var widgets = [any QuizWidget]()
-        widgets.append(QuizesModel.FillGapsQuestion(id: 0, title: nil, counterCurrent: nil, counterAll: nil, text: "Заполните{key1}пропуски{key2}в тексте{key3}Какой-то текст дальше...", answers: ["key1": "abc", "key2": "kek", "key3": "lol"]))
-        widgets.append(QuizesModel.FillGapsQuestion(id: 10, title: nil, counterCurrent: nil, counterAll: nil, text: "Заполните{key1}пропуски{key2}в тексте{key3}Какой-то текст дальше...", answers: ["key1": "abc", "key2": "kek", "key3": "lol"]))
-        widgets.append(QuizesModel.FillGapsQuestion(id: 120, title: nil, counterCurrent: nil, counterAll: nil, text: "Заполните{key1}пропуски{key2}в тексте{key3}Какой-то текст дальше...", answers: ["key1": "abc", "key2": "kek", "key3": "lol"]))
-        widgets.append(QuizesModel.FillGapsQuestion(id: 1230, title: nil, counterCurrent: nil, counterAll: nil, text: "Заполните{key1}пропуски{key2}в тексте{key3}Какой-то текст дальше...", answers: ["key1": "abc", "key2": "kek", "key3": "lol"]))
-        widgets.append(QuizesModel.ChoicesQuestion(id: 1, title: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?", counterCurrent: 1, counterAll: 1, rightAnswer: "Он родился старым и молодел", answers: [("Он научился летать", 13), ("Он родился старым и молодел", 60), ("Он умел предсказывать будущее", 12), ("Он становился больше с каждым днём", 15)]))
-        widgets.append(QuizesModel.RatingStarsQuestion(id: 2, title: "Оцените прошлый вопрос", counterCurrent: nil, counterAll: nil))
-        widgets.append(QuizesModel.MatchQuestion(id: 3, title: "Установите соответствие между английскими и русскими словами", counterCurrent: nil, counterAll: nil, pairs: ["shop": "магазин", "magazine": "журнал", "future": "будущее", "mood": "настроение"]))
-        widgets.append(QuizesModel.RatingStarsQuestion(id: 4, title: nil, counterCurrent: nil, counterAll: nil))
+        let counterAll = 5
+        
+        widgets.append(
+            QuizesModel.ChoicesQuestion(
+                id: 1,
+                title: "Что происходило с главным героем фильма «Загадочная история Бенджамина Баттона»?",
+                counterCurrent: 1,
+                counterAll: counterAll,
+                answers: [
+                    QuizesModel.ChoicesQuestion.Answer(id: 1, title: "Он научился летать", percent: 13),
+                    QuizesModel.ChoicesQuestion.Answer(id: 2, title: "Он родился старым и молодел", percent: 60),
+                    QuizesModel.ChoicesQuestion.Answer(id: 3, title: "Он умел предсказывать будущее", percent: 12),
+                    QuizesModel.ChoicesQuestion.Answer(id: 4, title: "Он становился больше с каждым днём", percent: 15)
+                ],
+                rightAnswerId: 1
+            )
+        )
+        
+        widgets.append(
+            QuizesModel.FillGapsQuestion(
+                id: 2,
+                title: "Заполните пропуски",
+                counterCurrent: 2,
+                counterAll: counterAll,
+                text: "\"Джентельмены\" - криминальная комедия режиссёра Гая {key1} по собственному сценарию. Главные роли в фильме исполняют Чарли Ханнэм, Генри Голдинг, Мишель Докери, Колин Фаррелл, Хью Грант и Мэттью {key2}. Бюджет фильма составил ${key3} млн\n{key4} Вильгельм Ди Каприо - американский актёр и продюсер, родился 11 ноября {key5} в Лос-Анджелесе, США. Всемирная известность обрушилась на актёра благодаря главной роли в фильме-катастрофе \"{key6}\". Первый и пока свой единственный «Оскар» ДиКаприо получил в 2016 году за роль в драме \"{key7}\"",
+                answers: [
+                    "key1": "Ричи",
+                    "key2": "Макконахи",
+                    "key3": "22",
+                    "key4": "Леонардо",
+                    "key5": "1974",
+                    "key6": "Титаник",
+                    "key7": "Выживший"
+                ]
+            )
+        )
+        widgets.append(
+            QuizesModel.RatingStarsQuestion(
+                id: 3,
+                title: "Оцените прошлые вопросы",
+                counterCurrent: nil,
+                counterAll: nil
+            )
+        )
+        
+        widgets.append(
+            QuizesModel.MatchQuestion(
+                id: 4,
+                title: "Установите соответствие между английскими и русскими словами",
+                counterCurrent: 3,
+                counterAll: counterAll,
+                pairs: ["shop": "магазин", "magazine": "журнал", "future": "будущее", "mood": "настроение"]
+            )
+        )
+        
+        widgets.append(
+            QuizesModel.FillGapsWithChoicesQuestion(
+                id: 5,
+                title: "Title",
+                counterCurrent: 4,
+                counterAll: counterAll,
+                text: "Заполните{key1}пропуски{key2}\nс выбором{key3}",
+                choices: [
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abc", forKey: "key2"),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abcd", forKey: nil),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abce", forKey: nil),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abca", forKey: "key1"),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abcds", forKey: "key3")
+                ]
+            )
+        )
+        
+        widgets.append(
+            QuizesModel.RatingStarsQuestion(
+                id: 6,
+                title: "Общее впечателение от приложения",
+                counterCurrent: nil,
+                counterAll: nil
+            )
+        )
         return widgets
     }
     

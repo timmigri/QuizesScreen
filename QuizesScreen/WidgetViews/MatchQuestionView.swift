@@ -18,7 +18,7 @@ struct MatchQuestionView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             QuestionHeadView(question: question)
             ZStack {
                 HStack(spacing: 50) {
@@ -52,7 +52,7 @@ struct MatchQuestionView: View {
                 doneIcon
             }
         }
-        .padding(15)
+        .padding(GlobalConstants.quizesWidgetPadding)
     }
     
     func clearSelection() {

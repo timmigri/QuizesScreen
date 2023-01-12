@@ -16,20 +16,13 @@ struct QuizesModel {
         let title: String?
         let counterCurrent: Int?
         let counterAll: Int?
+        let answers: [Answer]
+        let rightAnswerId: Int
         
-        let rightAnswer: String
-        let answers: [(String, Int)]
-        
-        static func == (lhs: ChoicesQuestion, rhs: ChoicesQuestion) -> Bool {
-            return lhs.id == rhs.id
-        }
-        
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-            hasher.combine(title)
-            hasher.combine(counterCurrent)
-            hasher.combine(counterAll)
-            hasher.combine(rightAnswer)
+        struct Answer : Hashable {
+            let id: Int
+            let title: String
+            let percent: Int
         }
     }
     
@@ -48,8 +41,14 @@ struct QuizesModel {
         let counterCurrent: Int?
         let counterAll: Int?
         
-        let text: [String]
-        let choices: [String?]
+        let text: String
+        let choices: [Choice]
+        
+        struct Choice : Hashable {
+            let id: Int
+            let title: String
+            let forKey: String?
+        }
     }
     
     struct FillGapsQuestion: QuizWidget {

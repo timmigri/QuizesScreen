@@ -30,7 +30,9 @@ struct RatingStarsQuestionView: View {
                         }
                 }
             }
-        }.padding(15)
+        }
+        .padding(GlobalConstants.quizesWidgetPadding)
+        .frame(maxWidth: .infinity)
     }
     
     func animate() {

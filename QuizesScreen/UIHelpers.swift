@@ -66,3 +66,7 @@ struct Shake: GeometryEffect {
             y: 0))
     }
 }
+
+struct GlobalConstants {
+    static let quizesWidgetPadding: CGFloat = 15
+}
