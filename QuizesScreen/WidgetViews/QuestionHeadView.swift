@@ -10,14 +10,14 @@ import SwiftUI
 struct QuestionHeadView: View {
     let question: any QuizWidget
     
-    var vstackAligment: HorizontalAlignment {
+    private var vstackAligment: HorizontalAlignment {
         if question as? QuizesModel.RatingStarsQuestion != nil {
             return .center
         }
         return .leading
     }
     
-    var textAligment: TextAlignment {
+    private var textAligment: TextAlignment {
         if question as? QuizesModel.RatingStarsQuestion != nil {
             return .center
         }

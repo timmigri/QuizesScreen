@@ -4,15 +4,15 @@ struct MatchQuestionView: View {
     let question: QuizesModel.MatchQuestion
     let screenGeometry: GeometryProxy
     
-    @State var firstWords: [String]
-    @State var secondWords: [String]
-    @State var firstWordsSelectedIndex: Int? = nil
-    @State var secondWordsSelectedIndex: Int? = nil
-    @State var isMatchCorrect: Bool? = nil
-    @State var wordMaxWidth: CGFloat?
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @State private var firstWords: [String]
+    @State private var secondWords: [String]
+    @State private var firstWordsSelectedIndex: Int? = nil
+    @State private var secondWordsSelectedIndex: Int? = nil
+    @State private var isMatchCorrect: Bool? = nil
+    @State private var wordMaxWidth: CGFloat?
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
     
-    var isFinished: Bool {
+    private var isFinished: Bool {
         return firstWords.count == 0 && secondWords.count == 0
     }
     
@@ -41,7 +41,7 @@ struct MatchQuestionView: View {
         .padding(GlobalConstants.quizesWidgetPadding)
     }
     
-    var firstColumn: some View {
+    private var firstColumn: some View {
         VStack {
             ForEach(Array(firstWords.enumerated()), id: \.element) { (index, word) in
                 renderWord(word: word, isSelected: index == firstWordsSelectedIndex) {
@@ -55,7 +55,7 @@ struct MatchQuestionView: View {
         .frame(maxWidth: .infinity)
     }
     
-    var secondColumn: some View {
+    private var secondColumn: some View {
         VStack {
             ForEach(Array(secondWords.enumerated()), id: \.element) { (index, word) in
                 renderWord(word: word, isSelected: index == secondWordsSelectedIndex) {
@@ -69,13 +69,13 @@ struct MatchQuestionView: View {
         .frame(maxWidth: .infinity)
     }
     
-    func clearSelection() {
+    private func clearSelection() {
         firstWordsSelectedIndex = nil
         secondWordsSelectedIndex = nil
         isMatchCorrect = nil
     }
     
-    func checkSelection() {
+    private func checkSelection() {
         if let firstIndex = firstWordsSelectedIndex, let secondIndex = secondWordsSelectedIndex {
             let firstWord = firstWords[firstIndex]
             let secondWord = secondWords[secondIndex]
@@ -101,7 +101,7 @@ struct MatchQuestionView: View {
         }
     }
     
-    func getWordColor(isSelected: Bool) -> Color {
+    private func getWordColor(isSelected: Bool) -> Color {
         if (!isSelected) {
             return colorScheme == .light ? .black : .white
         }
@@ -114,7 +114,7 @@ struct MatchQuestionView: View {
         return .orange
     }
     
-    var wrongSelectionIcon : some View {
+    private var wrongSelectionIcon : some View {
         var opacity: CGFloat = 0
         if let isCorrect = isMatchCorrect {
             if (!isCorrect) { opacity = 1 }
@@ -126,7 +126,7 @@ struct MatchQuestionView: View {
             .animation(.easeInOut(duration: Constants.WrongIcon.animationTime))
     }
     
-    var doneIcon : some View {
+    private var doneIcon : some View {
         let to: CGFloat = isFinished ? 1 : 0
         let opacity: CGFloat = isFinished ? 1 : 0
         return Image(systemName: "checkmark")
@@ -143,7 +143,7 @@ struct MatchQuestionView: View {
             .animation(.easeInOut(duration: Constants.DoneIcon.animationTime))
     }
     
-    func renderWord(word: String, isSelected: Bool, onTap: @escaping () -> Void) -> some View {
+    private func renderWord(word: String, isSelected: Bool, onTap: @escaping () -> Void) -> some View {
         let color = getWordColor(isSelected: isSelected)
         let scale = isSelected ? Constants.Word.selectedScale : 1
         let maxColumnWidth = (screenGeometry.size.width - Constants.spaceBetweenColumns) / 2

@@ -10,14 +10,14 @@ import SwiftUI
 struct RatingStarsQuestionView: View {
     let question: QuizesModel.RatingStarsQuestion
     
-    @State var selectedRating: Int? = nil
-    @State var scales: [CGFloat] = [1, 1, 1, 1, 1]
+    @State private var selectedRating: Int? = nil
+    @State private var scales: [CGFloat] = [1, 1, 1, 1, 1]
     
-    var isSelected: Bool {
+    private var isSelected: Bool {
         selectedRating != nil
     }
     
-    var isAnimationInProgress: Bool {
+    private var isAnimationInProgress: Bool {
         if let selectedRating = selectedRating {
             for index in 0..<selectedRating {
                 if (scales[index] != 1) {
@@ -50,7 +50,7 @@ struct RatingStarsQuestionView: View {
         .frame(maxWidth: .infinity)
     }
     
-    func animate() {
+    private func animate() {
         if let selectedRating = selectedRating {
             for index in 0...selectedRating {
                 let delay: CGFloat = Double(index) * Constants.animationDelayCoef
@@ -68,7 +68,7 @@ struct RatingStarsQuestionView: View {
         }
     }
                           
-    func iconName(index: Int) -> String {
+    private func iconName(index: Int) -> String {
         if (selectedRating == nil || index > selectedRating!) {
             return "star"
         }

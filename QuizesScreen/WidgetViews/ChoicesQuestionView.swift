@@ -2,9 +2,9 @@ import SwiftUI
 
 struct ChoicesQuestionView: View {
     let question: QuizesModel.ChoicesQuestion
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
     
-    @State var selectedAnswerId: Int? = nil
+    @State private var selectedAnswerId: Int? = nil
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -46,17 +46,17 @@ struct ChoicesQuestionView: View {
         }.padding(GlobalConstants.quizesWidgetPadding)
     }
     
-    func calcOpacity(answerId: Int, inverted: Bool = false) -> CGFloat {
+    private func calcOpacity(answerId: Int, inverted: Bool = false) -> CGFloat {
         let defaultOpacity: CGFloat = inverted ? 0 : 1
         let finishedOpacity: CGFloat = selectedAnswerId == answerId ? 1 : Constants.finishedOpacity
         return isFinished ? finishedOpacity : defaultOpacity
     }
     
-    var isFinished: Bool {
+    private var isFinished: Bool {
         selectedAnswerId != nil
     }
     
-    func answerBackground(percent: Int, opacity: CGFloat) -> some View {
+    private func answerBackground(percent: Int, opacity: CGFloat) -> some View {
         let coef = isFinished ? CGFloat(percent) / 100 : 0
         return GeometryReader { geometry in
             HStack(spacing: 0){
