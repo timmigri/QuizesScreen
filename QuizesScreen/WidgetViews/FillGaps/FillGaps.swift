@@ -80,7 +80,7 @@ func renderChoiceGapArea(_ item: FillGapsItem, onDrop: @escaping ([NSItemProvide
             .overlay((item.isCorrect != nil && item.isCorrect!) ? choiceGapAreaOverlay : nil, alignment: .center)
 }
 
-func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeometry: GeometryProxy, lastItemId: Int, colorScheme: ColorScheme, onDrop: @escaping ([NSItemProvider], Int) -> Bool) -> some View {
+func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeometry: GeometryProxy, lastItemId: Int, onDrop: @escaping ([NSItemProvider], Int) -> Bool) -> some View {
     var xAligment: CGFloat = .zero
     var yAligment: CGFloat = .zero
     
@@ -94,9 +94,8 @@ func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeomet
                         .autocapitalization(.none)
                         .autocorrectionDisabled(true)
                         .disabled(item.isDisabled)
-                        .overlay(Divider().foregroundColor(Constants.TextField.dividerColor()), alignment: .bottom)
+                        .overlay(Divider().overlay(item.color), alignment: .bottom)
                         .modifier(Shake(animatableData: CGFloat(item.attempts)))
-
                 } else if (item.type == .Text) {
                     Text(item.value)
                         .offset(y: Constants.Text.offsetY)
@@ -109,7 +108,8 @@ func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeomet
             }
             .padding(.vertical, Constants.itemPaddingVertical)
             .alignmentGuide(.trailing) { d in
-                if (abs(xAligment - d.width - 2 * GlobalConstants.quizesWidgetPadding) > screenGeometry.size.width) {
+                let m = abs(xAligment - d.width - 2 * GlobalConstants.quizesWidgetPadding)
+                if (m > screenGeometry.size.width) {
                     xAligment = 0
                     yAligment -= d.height
                 }
@@ -137,11 +137,6 @@ fileprivate struct Constants {
     static let itemPaddingVertical: CGFloat = 7
     struct TextField {
         static let width: CGFloat = 100
-        static func dividerColor(_ colorScheme: ColorScheme) -> Color {
-            let light: Color = .gray
-            let dark = "#ffffff"
-            return (colorScheme == .light ? light : hexStringToUIColor(hex: dark)
-        }
     }
     struct Text {
         static let offsetY: CGFloat = 5

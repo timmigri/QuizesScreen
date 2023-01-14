@@ -38,7 +38,7 @@ struct FillGapsWithChoicesQuestionView: View {
         VStack(alignment: .leading) {
             QuestionHeadView(question: question)
             if (items.count > 0) {
-                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id, colorScheme: colorScheme, onDrop: drop)
+                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id, onDrop: drop)
             }
             if (choices.count > 0 && !isFinished) {
                 choiceButtons
@@ -59,7 +59,7 @@ struct FillGapsWithChoicesQuestionView: View {
                         }
                         .overlay(
                             RoundedRectangle(cornerRadius: Constants.ChoiceButton.cornerRadius)
-                                .stroke(Constants.ChoiceButton.borderColor, lineWidth: Constants.ChoiceButton.borderWidth))
+                                .stroke(Constants.ChoiceButton.borderColor(colorScheme), lineWidth: Constants.ChoiceButton.borderWidth))
                         .padding(.horizontal, Constants.ChoiceButton.spaceBetween)
                 }
             }
@@ -96,7 +96,9 @@ struct FillGapsWithChoicesQuestionView: View {
             static let paddingVertical: CGFloat = 5
             static let paddingHorizontal: CGFloat = 10
             static let cornerRadius: CGFloat = 5
-            static let borderColor: Color = .black
+            static func borderColor(_ colorScheme: ColorScheme) -> Color {
+                colorScheme == .light ? .black : .white
+            }
             static let borderWidth: CGFloat = 1.5
             static let spaceBetween: CGFloat = 5
         }

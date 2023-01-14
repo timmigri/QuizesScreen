@@ -7,8 +7,7 @@ struct FillGapsQuestionView: View {
     @State private var items: [FillGapsItem] = []
     @State private var isFinished: Bool = false
     @State private var areButtonsVisible = true
-    
-    @Environment(\.colorScheme) var colorScheme: ColorScheme
+
     
     init(question: QuizesModel.FillGapsQuestion, screenGeometry: GeometryProxy) {
         self.question = question
@@ -20,7 +19,7 @@ struct FillGapsQuestionView: View {
         VStack(alignment: .leading) {
             QuestionHeadView(question: question)
             if (items.count > 0) {
-                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id, colorScheme: colorScheme,  onDrop: { providers, itemId in
+                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id, onDrop: { providers, itemId in
                     return false })
                 if (areButtonsVisible) {
                     actionButtons
