@@ -64,21 +64,20 @@ class QuizesViewModel : ObservableObject {
                 pairs: ["shop": "магазин", "magazine": "журнал", "future": "будущее", "mood": "настроение"]
             )
         )
-        
         widgets.append(
             QuizesModel.FillGapsWithChoicesQuestion(
                 id: 5,
                 title: "Заполните пропуски в тексте о Rammstein",
                 counterCurrent: 4,
                 counterAll: counterAll,
-                text: "Группа Rammstein была основана в январе {key1} года в {key2} гитаристом Рихардом {key3}. Музыкальный стиль группы относится к жанру {key4}",
+                text: "Группа Rammstein была основана в январе {key1} года в {key2} гитаристом Рихардом {key3}. Помимо него в состав группы на данный момент входят Тилль Линдеманн, Пауль Ландерс, Оливер Ридель, Кристоф Шнайдер и Кристиан {key5}. Музыкальный стиль группы относится к жанру {key4}",
                 choices: [
                     QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "1997", forKey: nil),
                     QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 2, title: "Бремене", forKey: nil),
                     QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 3, title: "индастриал-метала", forKey: "key4"),
                     QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 4, title: "Круспе", forKey: "key3"),
                     QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 5, title: "инди-рока", forKey: nil),
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 6, title: "Лоренцем", forKey: nil),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 6, title: "Лоренц", forKey: "key5"),
                     QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 7, title: "Берлине", forKey: "key2"),
                     QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 8, title: "1994", forKey: "key1"),
                 ]
