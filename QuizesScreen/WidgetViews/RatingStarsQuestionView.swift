@@ -13,17 +13,32 @@ struct RatingStarsQuestionView: View {
     @State var selectedRating: Int? = nil
     @State var scales: [CGFloat] = [1, 1, 1, 1, 1]
     
+    var isSelected: Bool {
+        selectedRating != nil
+    }
+    
+    var isAnimationInProgress: Bool {
+        if let selectedRating = selectedRating {
+            for index in 0..<selectedRating {
+                if (scales[index] != 1) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
     var body: some View {
         VStack {
             QuestionHeadView(question: question)
             HStack {
                 ForEach(1..<6) { index in
                     Image(systemName: iconName(index: index))
-                        .font(.system(size: 40))
-                        .foregroundColor(.orange)
+                        .font(.system(size: Constants.fontSize))
+                        .foregroundColor(Constants.color)
                         .scaleEffect(scales[index - 1])
                         .onTapGesture {
-                            if (!isAnimationInProgress()) {
+                            if (!isAnimationInProgress) {
                                 selectedRating = index
                                 animate()
                             }
@@ -38,11 +53,11 @@ struct RatingStarsQuestionView: View {
     func animate() {
         if let selectedRating = selectedRating {
             for index in 0...selectedRating {
-                let delay: CGFloat = Double(index) * 0.15
+                let delay: CGFloat = Double(index) * Constants.animationDelayCoef
                 DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                     withAnimation {
                         if (index < selectedRating) {
-                            scales[index] = 1.25
+                            scales[index] = Constants.animationScale
                         }
                         if (index > 0) {
                             scales[index - 1] = 1
@@ -52,17 +67,6 @@ struct RatingStarsQuestionView: View {
             }
         }
     }
-    
-    func isAnimationInProgress() -> Bool {
-        if let selectedRating = selectedRating {
-            for index in 0..<selectedRating {
-                if (scales[index] != 1) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
                           
     func iconName(index: Int) -> String {
         if (selectedRating == nil || index > selectedRating!) {
@@ -71,14 +75,22 @@ struct RatingStarsQuestionView: View {
         return "star.fill"
     }
     
-    var isSelected: Bool {
-        selectedRating != nil
+    private struct Constants {
+        static let fontSize: CGFloat = 40
+        static let color: Color = .orange
+        static let animationScale: CGFloat = 1.25
+        static let animationDelayCoef: CGFloat = 0.15
     }
 }
 
 struct RatingStarsQuestionView_Previews: PreviewProvider {
     static var previews: some View {
-        let question = QuizesModel.RatingStarsQuestion(id: 1, title: nil, counterCurrent: nil, counterAll: nil)
+        let question = QuizesModel.RatingStarsQuestion(
+            id: 1,
+            title: nil,
+            counterCurrent: nil,
+            counterAll: nil
+        )
         return Group {
             RatingStarsQuestionView(question: question)
             RatingStarsQuestionView(question: question).preferredColorScheme(.dark)

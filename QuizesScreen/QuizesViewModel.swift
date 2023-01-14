@@ -10,7 +10,7 @@ class QuizesViewModel : ObservableObject {
     
     func generateTestWidgets() -> [any QuizWidget] {
         var widgets = [any QuizWidget]()
-        let counterAll = 5
+        let counterAll = 4
         
         widgets.append(
             QuizesModel.ChoicesQuestion(
@@ -24,7 +24,7 @@ class QuizesViewModel : ObservableObject {
                     QuizesModel.ChoicesQuestion.Answer(id: 3, title: "Он умел предсказывать будущее", percent: 12),
                     QuizesModel.ChoicesQuestion.Answer(id: 4, title: "Он становился больше с каждым днём", percent: 15)
                 ],
-                rightAnswerId: 1
+                rightAnswerId: 2
             )
         )
         
@@ -68,16 +68,19 @@ class QuizesViewModel : ObservableObject {
         widgets.append(
             QuizesModel.FillGapsWithChoicesQuestion(
                 id: 5,
-                title: "Title",
+                title: "Заполните пропуски в тексте о Rammstein",
                 counterCurrent: 4,
                 counterAll: counterAll,
-                text: "Заполните{key1}пропуски{key2}\nс выбором{key3}",
+                text: "Группа Rammstein была основана в январе {key1} года в {key2} гитаристом Рихардом {key3}. Музыкальный стиль группы относится к жанру {key4}",
                 choices: [
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "for 2", forKey: "key2"),
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 2, title: "abcd", forKey: nil),
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 3, title: "abce", forKey: nil),
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 4, title: "for 1", forKey: "key1"),
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 5, title: "for 3", forKey: "key3")
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "1997", forKey: nil),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 2, title: "Бремене", forKey: nil),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 3, title: "индастриал-метала", forKey: "key4"),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 4, title: "Круспе", forKey: "key3"),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 5, title: "инди-рока", forKey: nil),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 6, title: "Лоренцем", forKey: nil),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 7, title: "Берлине", forKey: "key2"),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 8, title: "1994", forKey: "key1"),
                 ]
             )
         )

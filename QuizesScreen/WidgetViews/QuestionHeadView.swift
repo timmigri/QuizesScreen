@@ -28,16 +28,27 @@ struct QuestionHeadView: View {
         VStack(alignment: vstackAligment) {
             if let counterCurrent = question.counterCurrent, let counterAll = question.counterAll {
                 Text("Вопрос \(counterCurrent)/\(counterAll)")
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 10)
+                    .foregroundColor(Constants.Counter.color)
+                    .padding(.bottom, Constants.Counter.paddingBottom)
                     .multilineTextAlignment(textAligment)
             }
             if let title = question.title {
                 Text(title)
-                    .font(.title2)
-                    .padding(.bottom, 20)
+                    .font(Constants.Title.font)
+                    .padding(.bottom, Constants.Title.paddingBottom)
                     .multilineTextAlignment(textAligment)
             }
+        }
+    }
+    
+    private struct Constants {
+        struct Counter {
+            static let color: Color = .gray
+            static let paddingBottom: CGFloat = 10
+        }
+        struct Title {
+            static let font: Font = .title2
+            static let paddingBottom: CGFloat = 10
         }
     }
 }

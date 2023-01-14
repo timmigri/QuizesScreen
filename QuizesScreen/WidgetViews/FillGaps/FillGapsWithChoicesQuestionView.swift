@@ -8,6 +8,19 @@ struct FillGapsWithChoicesQuestionView: View {
     @State private var choices: [QuizesModel.FillGapsWithChoicesQuestion.Choice] = []
     @State private var areChoicesVisible = true
     
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    
+    private var isFinished: Bool {
+        for item in items {
+            if (item.type != .ChoiceArea) { continue }
+            guard let isCorrect = item.isCorrect else {
+                return false
+            }
+            if (!isCorrect) { return false }
+        }
+        return true
+    }
+    
     init(question: QuizesModel.FillGapsWithChoicesQuestion, screenGeometry: GeometryProxy) {
         self.question = question
         self.screenGeometry = screenGeometry
@@ -25,7 +38,7 @@ struct FillGapsWithChoicesQuestionView: View {
         VStack(alignment: .leading) {
             QuestionHeadView(question: question)
             if (items.count > 0) {
-                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id, onDrop: drop)
+                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id, colorScheme: colorScheme, onDrop: drop)
             }
             if (choices.count > 0 && !isFinished) {
                 choiceButtons
@@ -39,17 +52,19 @@ struct FillGapsWithChoicesQuestionView: View {
             HStack {
                 ForEach(choices, id: \.id) { choice in
                     Text(choice.title)
-                        .padding(.vertical, 5)
-                        .padding(.horizontal, 10)
+                        .padding(.vertical, Constants.ChoiceButton.paddingVertical)
+                        .padding(.horizontal, Constants.ChoiceButton.paddingHorizontal)
                         .onDrag{
                             return NSItemProvider(object: (choice.title) as NSString)
                         }
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(.black, lineWidth: 1.5))
-                        .padding(.horizontal, 5)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: Constants.ChoiceButton.cornerRadius)
+                                .stroke(Constants.ChoiceButton.borderColor, lineWidth: Constants.ChoiceButton.borderWidth))
+                        .padding(.horizontal, Constants.ChoiceButton.spaceBetween)
                 }
             }
-            .padding(.vertical, 10)
-        }.padding(.top, 20)
+            .padding(.vertical, Constants.choicesInnerPadding)
+        }.padding(.top, Constants.choicesPaddingTop)
     }
     
     private func drop(providers: [NSItemProvider], itemId: Int) -> Bool {
@@ -74,33 +89,37 @@ struct FillGapsWithChoicesQuestionView: View {
         return found
     }
     
-    private var isFinished: Bool {
-        for item in items {
-            if (item.type != .ChoiceArea) { continue }
-            guard let isCorrect = item.isCorrect else {
-                return false
-            }
-            if (!isCorrect) { return false }
+    private struct Constants {
+        static let choicesInnerPadding: CGFloat = 10
+        static let choicesPaddingTop: CGFloat = 20
+        struct ChoiceButton {
+            static let paddingVertical: CGFloat = 5
+            static let paddingHorizontal: CGFloat = 10
+            static let cornerRadius: CGFloat = 5
+            static let borderColor: Color = .black
+            static let borderWidth: CGFloat = 1.5
+            static let spaceBetween: CGFloat = 5
         }
-        return true
     }
-
 }
 
 struct FillGapsWithChoicesQuestionView_Previews: PreviewProvider {
     static var previews: some View {
         let question = QuizesModel.FillGapsWithChoicesQuestion(
-            id: 1,
-            title: "Title",
+            id: 5,
+            title: "Заполните пропуски в тексте о Rammstein",
             counterCurrent: 1,
             counterAll: 1,
-            text: "Заполните{key1}пропуски{key2}\nс выбором{key3}",
+            text: "Группа Rammstein была основана в январе {key1} года в {key2} гитаристом Рихардом {key3}. Музыкальный стиль группы относится к жанру {key4}",
             choices: [
-                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abc", forKey: "key2"),
-                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 2, title: "abcd", forKey: nil),
-                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 3, title: "abce", forKey: nil),
-                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 4, title: "abca", forKey: "key1"),
-                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 5, title: "abcds", forKey: "key3")
+                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "1997", forKey: nil),
+                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 2, title: "Бремене", forKey: nil),
+                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 3, title: "индастриал-метала", forKey: "key4"),
+                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 4, title: "Круспе", forKey: "key3"),
+                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 5, title: "инди-рока", forKey: nil),
+                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 6, title: "Лоренцем", forKey: nil),
+                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 7, title: "Берлине", forKey: "key2"),
+                QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 8, title: "1994", forKey: "key1"),
             ]
         )
         return Group {

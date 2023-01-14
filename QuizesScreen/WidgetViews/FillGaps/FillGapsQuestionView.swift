@@ -8,6 +8,8 @@ struct FillGapsQuestionView: View {
     @State private var isFinished: Bool = false
     @State private var areButtonsVisible = true
     
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
+    
     init(question: QuizesModel.FillGapsQuestion, screenGeometry: GeometryProxy) {
         self.question = question
         self.screenGeometry = screenGeometry
@@ -18,7 +20,7 @@ struct FillGapsQuestionView: View {
         VStack(alignment: .leading) {
             QuestionHeadView(question: question)
             if (items.count > 0) {
-                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id, onDrop: { providers, itemId in
+                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id, colorScheme: colorScheme,  onDrop: { providers, itemId in
                     return false })
                 if (areButtonsVisible) {
                     actionButtons
@@ -31,22 +33,27 @@ struct FillGapsQuestionView: View {
     private var actionButtons: some View {
          HStack {
             Button("Проверить", action: check)
-                .foregroundColor(.blue)
-                .padding(.vertical, 7)
-                .padding(.horizontal, 15)
-                .overlay(RoundedRectangle(cornerRadius: 7).stroke(.blue))
-                .padding(.top, 15)
+                 .foregroundColor(Constants.ActionButton.color)
+                .padding(.vertical, Constants.ActionButton.paddingVertical)
+                .padding(.horizontal, Constants.ActionButton.paddingHorizontal)
+                .overlay(
+                    RoundedRectangle(cornerRadius: Constants.ActionButton.cornerRadius)
+                        .stroke(Constants.ActionButton.color)
+                )
                 .scaleEffect(isFinished ? 0 : 1)
             
             
             Button("Ответы", action: showAnswers)
-                .foregroundColor(.blue)
-                .padding(.vertical, 7)
-                .padding(.horizontal, 15)
-                .overlay(RoundedRectangle(cornerRadius: 7).stroke(.blue))
-                .padding(.top, 15)
+                .foregroundColor(Constants.ActionButton.color)
+                .padding(.vertical, Constants.ActionButton.paddingVertical)
+                .padding(.horizontal, Constants.ActionButton.paddingHorizontal)
+                .overlay(
+                    RoundedRectangle(cornerRadius: Constants.ActionButton.cornerRadius)
+                        .stroke(Constants.ActionButton.color)
+                )
                 .scaleEffect(isFinished ? 0 : 1)
         }
+         .padding(.top, Constants.actionButtonsPaddingTop)
     }
     
     private func check() {
@@ -59,7 +66,7 @@ struct FillGapsQuestionView: View {
             if let answer = question.answers[item.key!] {
                 let isCorrect = (item.value.lowercased() == answer.lowercased())
                 if (isCorrect) {
-                    withAnimation(.easeInOut(duration: 0.1)) {
+                    withAnimation(.easeInOut(duration: Constants.Animation.correctAnswer)) {
                         items[index].value = answer
                         items[index].isCorrect = isCorrect
                         items[index].isDisabled = true
@@ -67,7 +74,7 @@ struct FillGapsQuestionView: View {
                 }
                 else {
                     wrongUserAnswers += 1
-                    withAnimation(.easeInOut(duration: 0.5)) {
+                    withAnimation(.easeInOut(duration: Constants.Animation.wrongAnswer)) {
                         items[index].isCorrect = isCorrect
                         items[index].attempts += 1
                     }
@@ -97,9 +104,24 @@ struct FillGapsQuestionView: View {
             }
             isFinished = true
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Constants.Animation.hidingButtons) {
             areButtonsVisible = false
         }
+    }
+    
+    private struct Constants {
+        struct Animation {
+            static let hidingButtons: CGFloat = 0.5
+            static let correctAnswer: CGFloat = 0.1
+            static let wrongAnswer: CGFloat = 0.5
+        }
+        struct ActionButton {
+            static let paddingVertical: CGFloat = 7
+            static let paddingHorizontal: CGFloat = 15
+            static let color: Color = .blue
+            static let cornerRadius: CGFloat = 7
+        }
+        static let actionButtonsPaddingTop: CGFloat = 15
     }
 }
 

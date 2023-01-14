@@ -29,7 +29,12 @@ struct ChoicesQuestionView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(10)
-                .background(answerBackground(percent: answer.percent, opacity: calcOpacity(answerId: answer.id)))
+                .background(
+                    answerBackground(
+                        percent: answer.percent,
+                        opacity: calcOpacity(answerId: answer.id)
+                    )
+                )
                 .onTapGesture {
                     if (selectedAnswerId == nil) {
                         withAnimation {
@@ -52,18 +57,21 @@ struct ChoicesQuestionView: View {
     }
     
     func answerBackground(percent: Int, opacity: CGFloat) -> some View {
-        let cornerRadius = CGFloat(5)
         let coef = isFinished ? CGFloat(percent) / 100 : 0
         return GeometryReader { geometry in
             HStack(spacing: 0){
                 Rectangle()
                     .fill(Constants.Answer.finishedBackgroundColor(colorScheme))
                     .frame(width: coef * geometry.size.width)
-                    .cornerRadius(cornerRadius, corners: [.topLeft, .bottomLeft])
+                    .cornerRadius(
+                        Constants.Answer.backgroundCornerRadius,
+                        corners: [.topLeft, .bottomLeft])
                     .opacity(opacity)
                 Rectangle()
                     .fill(Constants.Answer.backgroundColor(colorScheme))
-                    .cornerRadius(cornerRadius, corners: [.topRight, .bottomRight])
+                    .cornerRadius(
+                        Constants.Answer.backgroundCornerRadius,
+                        corners: [.topRight, .bottomRight])
                     .opacity(opacity)
             }
         }
@@ -75,6 +83,7 @@ struct ChoicesQuestionView: View {
             static let color = Color.gray
         }
         struct Answer {
+            static let backgroundCornerRadius: CGFloat = 5
             static func backgroundColor(_ colorScheme: ColorScheme) -> Color {
                 let light = "#e4ebf5"
                 let dark = "#1e2530"

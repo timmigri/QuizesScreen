@@ -60,19 +60,19 @@ func renderChoiceGapArea(_ item: FillGapsItem, onDrop: @escaping ([NSItemProvide
     var choiceGapAreaOverlay: some View {
         Text(item.value)
             .foregroundColor(item.color)
-            .frame(width: 80)
-            .offset(y: -5)
+            .frame(width: Constants.ChoiceAreaText.width)
+            .offset(y: Constants.ChoiceAreaText.offsetY)
             .lineLimit(1)
     }
     
     let isDropAvailable = !(item.isCorrect != nil && item.isCorrect!)
     
     return Rectangle()
-            .fill(.white)
-            .frame(width: 100, height: 30)
+            .fill(Constants.ChoiceArea.backgroundColor)
+            .frame(width: Constants.ChoiceArea.width, height: Constants.ChoiceArea.height)
             .border(item.color)
-            .offset(y: -5)
-            .padding(.horizontal, 5)
+            .offset(y: Constants.ChoiceArea.offsetY)
+            .padding(.horizontal, Constants.ChoiceArea.paddingHorizontal)
             .onDrop(of: (isDropAvailable ? [.plainText] : []), isTargeted: nil) { providers, location in
                 return onDrop(providers, item.id)
             }
@@ -80,7 +80,7 @@ func renderChoiceGapArea(_ item: FillGapsItem, onDrop: @escaping ([NSItemProvide
             .overlay((item.isCorrect != nil && item.isCorrect!) ? choiceGapAreaOverlay : nil, alignment: .center)
 }
 
-func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeometry: GeometryProxy, lastItemId: Int, onDrop: @escaping ([NSItemProvider], Int) -> Bool) -> some View {
+func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeometry: GeometryProxy, lastItemId: Int, colorScheme: ColorScheme, onDrop: @escaping ([NSItemProvider], Int) -> Bool) -> some View {
     var xAligment: CGFloat = .zero
     var yAligment: CGFloat = .zero
     
@@ -89,25 +89,25 @@ func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeomet
             Group {
                 if (item.type == .TextField) {
                     TextField("", text: $item.value)
-                        .frame(width: 100)
+                        .frame(width: Constants.TextField.width)
                         .foregroundColor(item.color)
                         .autocapitalization(.none)
                         .autocorrectionDisabled(true)
                         .disabled(item.isDisabled)
-                        .overlay(Divider(), alignment: .bottom)
+                        .overlay(Divider().foregroundColor(Constants.TextField.dividerColor()), alignment: .bottom)
                         .modifier(Shake(animatableData: CGFloat(item.attempts)))
 
                 } else if (item.type == .Text) {
                     Text(item.value)
-                        .offset(y: 5)
-                        .padding(.horizontal, 2.5)
+                        .offset(y: Constants.Text.offsetY)
+                        .padding(.horizontal, Constants.Text.paddingHorizontal)
                 } else if (item.type == .EndParagraph) {
-                    Color.clear.frame(height: 20)
+                    Color.clear.frame(height: Constants.EndParagraph.height)
                 } else if (item.type == .ChoiceArea) {
                     renderChoiceGapArea(item, onDrop: onDrop)
                 }
             }
-            .padding(.vertical, 7)
+            .padding(.vertical, Constants.itemPaddingVertical)
             .alignmentGuide(.trailing) { d in
                 if (abs(xAligment - d.width - 2 * GlobalConstants.quizesWidgetPadding) > screenGeometry.size.width) {
                     xAligment = 0
@@ -129,5 +129,36 @@ func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeomet
                 return res
             }
         }
+    }
+}
+
+
+fileprivate struct Constants {
+    static let itemPaddingVertical: CGFloat = 7
+    struct TextField {
+        static let width: CGFloat = 100
+        static func dividerColor(_ colorScheme: ColorScheme) -> Color {
+            let light: Color = .gray
+            let dark = "#ffffff"
+            return (colorScheme == .light ? light : hexStringToUIColor(hex: dark)
+        }
+    }
+    struct Text {
+        static let offsetY: CGFloat = 5
+        static let paddingHorizontal: CGFloat = 2.5
+    }
+    struct EndParagraph {
+        static let height: CGFloat = 20
+    }
+    struct ChoiceArea {
+        static let backgroundColor: Color = .white
+        static let width: CGFloat = 100
+        static let height: CGFloat = 30
+        static let offsetY: CGFloat = -5
+        static let paddingHorizontal: CGFloat = 5
+    }
+    struct ChoiceAreaText {
+        static let width: CGFloat = 80
+        static let offsetY: CGFloat = -5
     }
 }
