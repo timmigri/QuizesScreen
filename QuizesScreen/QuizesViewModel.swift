@@ -73,11 +73,11 @@ class QuizesViewModel : ObservableObject {
                 counterAll: counterAll,
                 text: "Заполните{key1}пропуски{key2}\nс выбором{key3}",
                 choices: [
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abc", forKey: "key2"),
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abcd", forKey: nil),
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abce", forKey: nil),
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abca", forKey: "key1"),
-                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "abcds", forKey: "key3")
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 1, title: "for 2", forKey: "key2"),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 2, title: "abcd", forKey: nil),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 3, title: "abce", forKey: nil),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 4, title: "for 1", forKey: "key1"),
+                    QuizesModel.FillGapsWithChoicesQuestion.Choice(id: 5, title: "for 3", forKey: "key3")
                 ]
             )
         )

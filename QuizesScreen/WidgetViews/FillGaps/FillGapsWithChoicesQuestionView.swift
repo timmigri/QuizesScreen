@@ -6,14 +6,13 @@ struct FillGapsWithChoicesQuestionView: View {
     
     @State private var items: [FillGapsItem] = []
     @State private var choices: [QuizesModel.FillGapsWithChoicesQuestion.Choice] = []
-    @State private var isFinished: Bool = false
     @State private var areChoicesVisible = true
     
     init(question: QuizesModel.FillGapsWithChoicesQuestion, screenGeometry: GeometryProxy) {
         self.question = question
         self.screenGeometry = screenGeometry
         _items = State(
-            initialValue: convertTextToFillGapsItems(question.text).map{ item in
+            initialValue: convertTextToFillGapsItems(question.text, areGapsChoices: true).map{ item in
                 var mutableItem = item
                 mutableItem.isDisabled = true
                 return mutableItem
@@ -26,9 +25,9 @@ struct FillGapsWithChoicesQuestionView: View {
         VStack(alignment: .leading) {
             QuestionHeadView(question: question)
             if (items.count > 0) {
-                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id)
+                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id, onDrop: drop)
             }
-            if (choices.count > 0) {
+            if (choices.count > 0 && !isFinished) {
                 choiceButtons
             }
         }
@@ -42,33 +41,50 @@ struct FillGapsWithChoicesQuestionView: View {
                     Text(choice.title)
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
+                        .onDrag{
+                            return NSItemProvider(object: (choice.title) as NSString)
+                        }
                         .overlay(RoundedRectangle(cornerRadius: 20).stroke(.black, lineWidth: 1.5))
                         .padding(.horizontal, 5)
                 }
             }
+            .padding(.vertical, 10)
         }.padding(.top, 20)
     }
     
-//    private var actionButtons: some View {
-//         HStack {
-//            Button("Проверить", action: check)
-//                .foregroundColor(.blue)
-//                .padding(.vertical, 7)
-//                .padding(.horizontal, 15)
-//                .overlay(RoundedRectangle(cornerRadius: 7).stroke(.blue))
-//                .padding(.top, 15)
-//                .scaleEffect(isFinished ? 0 : 1)
-//
-//
-//            Button("Ответы", action: showAnswers)
-//                .foregroundColor(.blue)
-//                .padding(.vertical, 7)
-//                .padding(.horizontal, 15)
-//                .overlay(RoundedRectangle(cornerRadius: 7).stroke(.blue))
-//                .padding(.top, 15)
-//                .scaleEffect(isFinished ? 0 : 1)
-//        }
-//    }
+    private func drop(providers: [NSItemProvider], itemId: Int) -> Bool {
+        let found = providers.loadObjects(ofType: String.self) { choiceTitle in
+            if let index = items.firstIndex(where: { $0.id == itemId }), let choice = choices.first(where: { $0.title == choiceTitle }) {
+                if (choice.forKey == items[index].key) {
+                    withAnimation(.easeInOut(duration: 0.1)) {
+                        items[index].isCorrect = true
+                        items[index].value = choice.title
+                        choices.removeAll(where: { $0.forKey == choice.forKey })
+                    }
+                } else {
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        items[index].isCorrect = false
+                        items[index].attempts += 1
+                        items[index].value = choiceTitle
+                    }
+                }
+            }
+        }
+
+        return found
+    }
+    
+    private var isFinished: Bool {
+        for item in items {
+            if (item.type != .ChoiceArea) { continue }
+            guard let isCorrect = item.isCorrect else {
+                return false
+            }
+            if (!isCorrect) { return false }
+        }
+        return true
+    }
+
 }
 
 struct FillGapsWithChoicesQuestionView_Previews: PreviewProvider {

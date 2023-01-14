@@ -14,6 +14,9 @@ struct ContentView: View {
                         if let widget = item as? QuizesModel.MatchQuestion {
                             MatchQuestionView(question: widget)
                         }
+                        if let widget = item as? QuizesModel.FillGapsWithChoicesQuestion {
+                            FillGapsWithChoicesQuestionView(question: widget, screenGeometry: geometry)
+                        }
                         if let widget = item as? QuizesModel.FillGapsQuestion {
                             FillGapsQuestionView(question: widget, screenGeometry: geometry)
                         }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FillGapsItem {
     enum Kind {
-        case Text, TextField, EndParagraph
+        case Text, TextField, ChoiceArea, EndParagraph
     }
     
     let id: Int
@@ -23,7 +23,7 @@ struct FillGapsItem {
     var attempts: Int = 0
 }
 
-func convertTextToFillGapsItems(_ text: String) -> [FillGapsItem]{
+func convertTextToFillGapsItems(_ text: String, areGapsChoices: Bool = false) -> [FillGapsItem]{
     var items = [FillGapsItem]()
     var idCounter = 1
     func splitStringToWordItems(_ str: String) {
@@ -39,7 +39,7 @@ func convertTextToFillGapsItems(_ text: String) -> [FillGapsItem]{
                 splitStringToWordItems(cur)
                 cur = ""
             } else if (char == "}") {
-                items.append(FillGapsItem(id: idCounter, type: .TextField, key: cur, value: ""))
+                items.append(FillGapsItem(id: idCounter, type: (areGapsChoices ? .ChoiceArea : .TextField), key: cur, value: ""))
                 cur = ""
                 idCounter += 1
             } else {
@@ -56,9 +56,34 @@ func convertTextToFillGapsItems(_ text: String) -> [FillGapsItem]{
     return items
 }
 
-func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeometry: GeometryProxy, lastItemId: Int) -> some View {
+func renderChoiceGapArea(_ item: FillGapsItem, onDrop: @escaping ([NSItemProvider], Int) -> Bool) -> some View {
+    var choiceGapAreaOverlay: some View {
+        Text(item.value)
+            .foregroundColor(item.color)
+            .frame(width: 80)
+            .offset(y: -5)
+            .lineLimit(1)
+    }
+    
+    let isDropAvailable = !(item.isCorrect != nil && item.isCorrect!)
+    
+    return Rectangle()
+            .fill(.white)
+            .frame(width: 100, height: 30)
+            .border(item.color)
+            .offset(y: -5)
+            .padding(.horizontal, 5)
+            .onDrop(of: (isDropAvailable ? [.plainText] : []), isTargeted: nil) { providers, location in
+                return onDrop(providers, item.id)
+            }
+            .modifier(Shake(animatableData: CGFloat(item.attempts)))
+            .overlay((item.isCorrect != nil && item.isCorrect!) ? choiceGapAreaOverlay : nil, alignment: .center)
+}
+
+func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeometry: GeometryProxy, lastItemId: Int, onDrop: @escaping ([NSItemProvider], Int) -> Bool) -> some View {
     var xAligment: CGFloat = .zero
     var yAligment: CGFloat = .zero
+    
     return ZStack(alignment: .topTrailing) {
         ForEach(items, id: \.id) { $item in
             Group {
@@ -69,7 +94,7 @@ func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeomet
                         .autocapitalization(.none)
                         .autocorrectionDisabled(true)
                         .disabled(item.isDisabled)
-                        .overlay(Divider().overlay(item.color), alignment: .bottom)
+                        .overlay(Divider(), alignment: .bottom)
                         .modifier(Shake(animatableData: CGFloat(item.attempts)))
 
                 } else if (item.type == .Text) {
@@ -78,6 +103,8 @@ func renderFillGapsItems(_ items: Binding<[FillGapsItem]>, geometry screenGeomet
                         .padding(.horizontal, 2.5)
                 } else if (item.type == .EndParagraph) {
                     Color.clear.frame(height: 20)
+                } else if (item.type == .ChoiceArea) {
+                    renderChoiceGapArea(item, onDrop: onDrop)
                 }
             }
             .padding(.vertical, 7)

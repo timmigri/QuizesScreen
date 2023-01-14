@@ -18,7 +18,8 @@ struct FillGapsQuestionView: View {
         VStack(alignment: .leading) {
             QuestionHeadView(question: question)
             if (items.count > 0) {
-                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id)
+                renderFillGapsItems($items, geometry: screenGeometry, lastItemId: items.last!.id, onDrop: { providers, itemId in
+                    return false })
                 if (areButtonsVisible) {
                     actionButtons
                 }
